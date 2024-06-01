@@ -90,39 +90,21 @@ public class Employee {
         }
 
         public EmployeeBuilder withFirstName(String firstName) {
-            if (firstName == null || !StringFormatValidator.validNameFormat(firstName)) {
-                if (firstName == null) {
-                    throw new InvalidInputFormatError("First name cannot be null.");
-                }
-                throw new InvalidInputFormatError("Invalid first name format: " + firstName);
-            }
             this.firstName = firstName;
             return this;
         }
 
         public EmployeeBuilder withLastName(String lastName) {
-            if (lastName == null || !StringFormatValidator.validNameFormat(lastName)) {
-                if (lastName == null) {
-                    throw new InvalidInputFormatError("Last name cannot be null.");
-                }
-                throw new InvalidInputFormatError("Invalid last name format: " + lastName);
-            }
             this.lastName = lastName;
             return this;
         }
 
         public EmployeeBuilder withMiddleName(String middleName) {
-            if (middleName != null && !StringFormatValidator.validNameFormat(middleName)) {
-                throw new InvalidInputFormatError("Invalid middle name format: " + middleName);
-            }
             this.middleName = middleName;
             return this;
         }
 
         public EmployeeBuilder withEmail(String email) {
-            if (email != null && !StringFormatValidator.validEmailFormat(email)) {
-                throw new InvalidInputFormatError("Invalid email format: " + email);
-            }
             this.email = email;
             return this;
         }
@@ -148,9 +130,6 @@ public class Employee {
         }
 
         public EmployeeBuilder withPhone(String phone) {
-            if (phone != null && !StringFormatValidator.validUsPhoneFormat(phone)) {
-                throw new InvalidInputFormatError(String.format("Invalid phone format: %s. Expected format: +1-xxx-xxx-xxxx", phone));
-            }
             this.phone = phone;
             return this;
         }
@@ -161,33 +140,21 @@ public class Employee {
         }
 
         public EmployeeBuilder withCity(String city) {
-            if (city != null && !StringFormatValidator.validNameFormat(city)) {
-                throw new InvalidInputFormatError("Invalid city name format: " + city);
-            }
             this.city = city;
             return this;
         }
 
         public EmployeeBuilder withState(String state) {
-            if (state != null && !StringFormatValidator.validNameFormat(state)) {
-                throw new InvalidInputFormatError("Invalid state name format: " + state);
-            }
             this.state = state;
             return this;
         }
 
         public EmployeeBuilder withZipCode(String zipCode) {
-            if (zipCode != null && !StringFormatValidator.validUnitedStatesZipCodeFormat(zipCode)) {
-                throw new InvalidInputFormatError("Invalid zip code format: " + zipCode);
-            }
             this.zipCode = zipCode;
             return this;
         }
 
         public EmployeeBuilder withPayRate(String payRate) {
-            if (payRate != null && !StringFormatValidator.validPayrateFormat(payRate)) {
-                throw new InvalidInputFormatError("Invalid pay rate format: " + payRate);
-            }
             this.payRate = payRate;
             return this;
         }
@@ -198,6 +165,57 @@ public class Employee {
         }
 
         public Employee build() {
+            // First Name Validation
+            if (firstName == null || !StringFormatValidator.validNameFormat(firstName)) {
+                if (firstName == null) {
+                    throw new InvalidInputFormatError("First name cannot be null.");
+                }
+                throw new InvalidInputFormatError("Invalid first name format: " + firstName);
+            }
+
+            // Last Name Validation
+            if (lastName == null || !StringFormatValidator.validNameFormat(lastName)) {
+                if (lastName == null) {
+                    throw new InvalidInputFormatError("Last name cannot be null.");
+                }
+                throw new InvalidInputFormatError("Invalid last name format: " + lastName);
+            }
+
+            // Middle Name Validation
+            if (middleName != null && !StringFormatValidator.validNameFormat(middleName)) {
+                throw new InvalidInputFormatError("Invalid middle name format: " + middleName);
+            }
+
+            // Email Validation
+            if (email != null && !StringFormatValidator.validEmailFormat(email)) {
+                throw new InvalidInputFormatError("Invalid email format: " + email);
+            }
+
+            // Phone Number Validation
+            if (phone != null && !StringFormatValidator.validUsPhoneFormat(phone)) {
+                throw new InvalidInputFormatError(String.format("Invalid phone format: %s. Expected format: +1-xxx-xxx-xxxx", phone));
+            }
+
+            // City Validation
+            if (city != null && !StringFormatValidator.validNameFormat(city)) {
+                throw new InvalidInputFormatError("Invalid city name format: " + city);
+            }
+
+            // State Validation
+            if (state != null && !StringFormatValidator.validNameFormat(state)) {
+                throw new InvalidInputFormatError("Invalid state name format: " + state);
+            }
+
+            // Zip Code Validation
+            if (zipCode != null && !StringFormatValidator.validUnitedStatesZipCodeFormat(zipCode)) {
+                throw new InvalidInputFormatError("Invalid zip code format: " + zipCode);
+            }
+
+            // Pay Rate Validation
+            if (payRate != null && !StringFormatValidator.validPayrateFormat(payRate)) {
+                throw new InvalidInputFormatError("Invalid pay rate format: " + payRate);
+            }
+
             return new Employee(this);
         }
     }
@@ -211,6 +229,13 @@ public class Employee {
     }
 
     public void setFirstName(String firstName) {
+        if (firstName == null || !StringFormatValidator.validNameFormat(firstName)) {
+            if (firstName == null) {
+                throw new InvalidInputFormatError("First name cannot be null.");
+            }
+            throw new InvalidInputFormatError("Invalid first name format: " + firstName);
+        }
+
         this.firstName = firstName;
     }
 
@@ -219,6 +244,13 @@ public class Employee {
     }
 
     public void setLastName(String lastName) {
+        if (lastName == null || !StringFormatValidator.validNameFormat(lastName)) {
+            if (lastName == null) {
+                throw new InvalidInputFormatError("Last name cannot be null.");
+            }
+            throw new InvalidInputFormatError("Invalid last name format: " + lastName);
+        }
+
         this.lastName = lastName;
     }
 
@@ -227,6 +259,10 @@ public class Employee {
     }
 
     public void setMiddleName(String middleName) {
+        if (!StringFormatValidator.validNameFormat(middleName)) {
+            throw new InvalidInputFormatError("Invalid middle name format: " + middleName);
+        }
+
         this.middleName = middleName;
     }
 
@@ -235,6 +271,10 @@ public class Employee {
     }
 
     public void setEmail(String email) {
+        if (!StringFormatValidator.validEmailFormat(email)) {
+            throw new InvalidInputFormatError("Invalid email format: " + email);
+        }
+
         this.email = email;
     }
 
@@ -275,6 +315,10 @@ public class Employee {
     }
 
     public void setPhone(String phone) {
+        if (!StringFormatValidator.validUsPhoneFormat(phone)) {
+            throw new InvalidInputFormatError(String.format("Invalid phone format: %s. Expected format: +1-xxx-xxx-xxxx", phone));
+        }
+
         this.phone = phone;
     }
 
@@ -291,6 +335,10 @@ public class Employee {
     }
 
     public void setCity(String city) {
+        if (!StringFormatValidator.validNameFormat(city)) {
+            throw new InvalidInputFormatError("Invalid city name format: " + city);
+        }
+
         this.city = city;
     }
 
@@ -299,6 +347,10 @@ public class Employee {
     }
 
     public void setState(String state) {
+        if (!StringFormatValidator.validNameFormat(state)) {
+            throw new InvalidInputFormatError("Invalid state name format: " + state);
+        }
+
         this.state = state;
     }
 
@@ -307,6 +359,9 @@ public class Employee {
     }
 
     public void setZipCode(String zipCode) {
+        if (!StringFormatValidator.validUnitedStatesZipCodeFormat(zipCode)) {
+            throw new InvalidInputFormatError("Invalid zip code format: " + zipCode);
+        }
         this.zipCode = zipCode;
     }
 
@@ -315,6 +370,10 @@ public class Employee {
     }
 
     public void setPayRate(String payRate) {
+        if (!StringFormatValidator.validPayrateFormat(payRate)) {
+            throw new InvalidInputFormatError("Invalid pay rate format: " + payRate);
+        }
+
         this.payRate = payRate;
     }
 

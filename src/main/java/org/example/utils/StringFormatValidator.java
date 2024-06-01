@@ -13,7 +13,7 @@ public class StringFormatValidator {
     }
 
     public static boolean validUnitedStatesZipCodeFormat(String zipcode) {
-        Pattern unitedStatesZipCodePattern = Pattern.compile("\\\\d{5}(-\\\\d{4})?");
+        Pattern unitedStatesZipCodePattern = Pattern.compile("^\\d{5}(-\\d{4})?$");
         return unitedStatesZipCodePattern.matcher(zipcode).find();
     }
 
@@ -23,14 +23,15 @@ public class StringFormatValidator {
     }
 
     /**
-     * Validates the format of a name, ensuring it contains only alphabetic characters (both lowercase and uppercase)
-     * and hyphens. This method can be used to validate any name, including hyphenated names.
+     * Validates the format of a name, ensuring it contains only alphabetic characters (both lowercase and uppercase),
+     * hyphens, and single spaces between words. This method can be used to validate any name, including hyphenated names
+     * and names with spaces.
      *
      * @param name the name to be validated
      * @return {@code true} if the name is valid; {@code false} otherwise
      */
     public static boolean validNameFormat(String name) {
-        Pattern namePattern = Pattern.compile("^[a-zA-Z-]+$");
+        Pattern namePattern = Pattern.compile("^[a-zA-Z]+(?:[\\s-][a-zA-Z]+)*$");
         return namePattern.matcher(name).find();
     }
 
