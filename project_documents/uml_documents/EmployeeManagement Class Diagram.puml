@@ -1,0 +1,32 @@
+@startuml
+class Employee {
+    - employeeId : String
+    - firstName : String
+    - lastName : String
+    - email : String
+    - department : String
+    - hireDate : LocalDate
+    - currentlyEmployed : boolean
+    - terminatedDate : LocalDate
+    - phone : String
+    - address : String
+    - city : String
+    - state : String
+    - zipCode : String
+    - payRate : String
+    - permissionAccess : Permission
+
+    - void Employee(builder : EmployeeBuilder)
+    + {static} builder() : EmployeeBuilder
+}
+
+class TimeEntry {
+    - employeeId : String
+    - entryId : String
+    - timeIn : LocalDateTime
+    - timeOut : LocalDateTime
+    - duration : double
+
+    + TimeEntry()
+}
+@enduml

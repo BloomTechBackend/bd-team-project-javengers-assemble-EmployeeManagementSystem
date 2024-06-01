@@ -1,0 +1,43 @@
+@startuml "Employee Homepage and Time Entries Sequence"
+title Employee Homepage and Time Entries Sequence
+
+actor User
+participant frontend
+participant CreateTimeEntryLambda
+participant GetTimeEntriesLambda
+participant UpdateTimeEntryLambda
+database Employee_Time_Entry
+
+' Sequence for navigating to homepage and viewing last 5 time entries
+User -> frontend: Navigate to homepage
+frontend -> GetTimeEntriesLambda: Request last 5 time entries
+GetTimeEntriesLambda -> Employee_Time_Entry: Retrieve last 5 time entries
+Employee_Time_Entry -> GetTimeEntriesLambda: Return last 5 time entries
+GetTimeEntriesLambda -> frontend: Return last 5 time entries
+frontend -> User: Display last 5 time entries
+
+' Sequence for clocking in
+User -> frontend: Click "Clock In" button
+frontend -> CreateTimeEntryLambda: Send time_in request
+CreateTimeEntryLambda -> Employee_Time_Entry: Create new time entry with time_in
+Employee_Time_Entry -> CreateTimeEntryLambda: Return success
+CreateTimeEntryLambda -> frontend: Return success
+frontend -> User: Display clock in success message
+
+' Sequence for clocking out
+User -> frontend: Click "Clock Out" button
+frontend -> UpdateTimeEntryLambda: Send time_out request
+UpdateTimeEntryLambda -> Employee_Time_Entry: Update last time entry with time_out
+Employee_Time_Entry -> UpdateTimeEntryLambda: Return success
+UpdateTimeEntryLambda -> frontend: Return success
+frontend -> User: Display clock out success message
+
+' Sequence for navigating to time entries page and viewing all time entries
+User -> frontend: Navigate to Time page
+frontend -> GetTimeEntriesLambda: Request all time entries
+GetTimeEntriesLambda -> Employee_Time_Entry: Retrieve all time entries
+Employee_Time_Entry -> GetTimeEntriesLambda: Return all time entries
+GetTimeEntriesLambda -> frontend: Return all time entries
+frontend -> User: Display all time entries
+
+@enduml

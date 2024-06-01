@@ -1,0 +1,80 @@
+@startuml
+title Employee Profile Page Sequence
+
+actor User
+participant frontend
+participant GetEmployeeLambda
+participant UpdateEmployeeLambda
+database Employee
+
+' Sequence for navigating to profile page and viewing profile information
+User -> frontend: Navigate to profile page
+frontend -> GetEmployeeLambda: Request profile information
+GetEmployeeLambda -> Employee: Retrieve profile information
+Employee -> GetEmployeeLambda: Return profile information
+GetEmployeeLambda -> frontend: Return profile information
+frontend -> User: Display profile information
+
+' Sequence for updating profile information
+User -> frontend: Update profile fields
+frontend -> UpdateEmployeeLambda: Send updated profile information
+UpdateEmployeeLambda -> Employee: Update profile information
+alt Update successful
+    Employee -> UpdateEmployeeLambda: Return success
+    UpdateEmployeeLambda -> frontend: Return success
+    frontend -> User: Display update success message
+else Update failed
+    Employee -> UpdateEmployeeLambda: Return error
+    UpdateEmployeeLambda -> frontend: Return error
+    frontend -> User: Display update error message
+end
+
+newpage Admin User Employee Management Sequence
+
+actor User
+note left of User: Admin User
+
+participant frontend
+participant CreateEmployeeLambda
+participant GetEmployeeLambda
+participant UpdateEmployeeLambda
+database Employee
+
+' Sequence for Admin User creating a new employee
+User -> frontend: Navigate to create employee page
+User -> frontend: Enter new employee information
+frontend -> CreateEmployeeLambda: Send new employee information
+CreateEmployeeLambda -> Employee: Create new employee entry
+alt Creation successful
+    Employee -> CreateEmployeeLambda: Return success
+    CreateEmployeeLambda -> frontend: Return success
+    frontend -> User: Display creation success message
+else Creation failed
+    Employee -> CreateEmployeeLambda: Return error
+    CreateEmployeeLambda -> frontend: Return error
+    frontend -> User: Display creation error message
+end
+
+' Sequence for Admin User updating an employee's information
+User -> frontend: Navigate to update employee page
+User -> frontend: Enter updated employee information
+frontend -> UpdateEmployeeLambda: Send updated employee information
+UpdateEmployeeLambda -> Employee: Update employee entry
+alt Update successful
+    Employee -> UpdateEmployeeLambda: Return success
+    UpdateEmployeeLambda -> frontend: Return success
+    frontend -> User: Display update success message
+else Update failed
+    Employee -> UpdateEmployeeLambda: Return error
+    UpdateEmployeeLambda -> frontend: Return error
+    frontend -> User: Display update error message
+end
+
+' Sequence for Admin User viewing all employees
+User -> frontend: Navigate to view all employees page
+frontend -> GetEmployeeLambda: Request all employee information
+GetEmployeeLambda -> Employee: Retrieve all employee information
+Employee -> GetEmployeeLambda: Return all employee information
+GetEmployeeLambda -> frontend: Return all employee information
+frontend -> User: Display all employee information
+@enduml

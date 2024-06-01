@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Javengers Profile Page</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            background-color: #121212;
+            color: #ffffff;
+        }
+        h1 {
+            text-align: center;
+        }
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 20px;
+            background-color: #1e1e1e;
+            border-bottom: 1px solid #333;
+        }
+        .navbar a {
+            text-decoration: none;
+        }
+        .navbar button, .navbar a {
+            background-color: #333;
+            border: 1px solid #555;
+            color: #fff;
+            padding: 10px;
+            cursor: pointer;
+            text-align: center;
+            display: inline-block;
+        }
+        .navbar button:hover, .navbar a:hover {
+            background-color: #555;
+        }
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            border: 1px solid #333;
+            border-radius: 5px;
+            background-color: #1e1e1e;
+        }
+        .container label {
+            display: block;
+            margin-top: 10px;
+        }
+        .container input {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            background-color: #333;
+            border: 1px solid #555;
+            color: #fff;
+        }
+        .container input[readonly] {
+            background-color: #555;
+        }
+        .flex-container {
+            display: flex;
+            justify-content: space-between;
+        }
+        .flex-container .flex-item {
+            flex: 1;
+            margin-right: 10px;
+        }
+        .flex-container .flex-item:last-child {
+            margin-right: 0;
+        }
+        .button-container {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 20px;
+        }
+        .button-container button {
+            padding: 10px 20px;
+            background-color: #333;
+            border: 1px solid #555;
+            color: #fff;
+            cursor: pointer;
+            margin-left: 10px;
+        }
+        .button-container button:hover {
+            background-color: #555;
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <a href="landing_page.html">Home</a>
+        <a href="time_page.html">Time</a>
+        <a href="profile_page.html">Profile</a>
+        <button>Logout</button>
+    </div>
+    <h1>Employee Profile</h1>
+    <div class="container">
+        <label for="employee_id">Employee ID:</label>
+        <input type="text" id="employee_id" name="employee_id" value="12345" readonly>
+        
+        <div class="flex-container">
+            <div class="flex-item">
+                <label for="first_name">First Name:</label>
+                <input type="text" id="first_name" name="first_name" value="John" readonly>
+            </div>
+            <div class="flex-item">
+                <label for="last_name">Last Name:</label>
+                <input type="text" id="last_name" name="last_name" value="Doe" readonly>
+            </div>
+        </div>
+
+        <label for="hire_date">Hire Date:</label>
+        <input type="text" id="hire_date" name="hire_date" value="2020-01-01" readonly>
+        
+        <label for="department">Department:</label>
+        <input type="text" id="department" name="department" value="IT" readonly>
+        
+        <label for="pay_rate">Pay Rate:</label>
+        <input type="text" id="pay_rate" name="pay_rate" value="$30/hr" readonly>
+        
+        <label for="phone">Phone:</label>
+        <input type="text" id="phone" name="phone" value="555-1234" readonly>
+        
+        <label for="address">Address:</label>
+        <input type="text" id="address" name="address" value="123 Main St" readonly>
+        
+        <div class="flex-container">
+            <div class="flex-item">
+                <label for="city">City:</label>
+                <input type="text" id="city" name="city" value="Anytown" readonly>
+            </div>
+            <div class="flex-item">
+                <label for="state">State:</label>
+                <input type="text" id="state" name="state" value="CA" readonly>
+            </div>
+            <div class="flex-item">
+                <label for="zip_code">Zip Code:</label>
+                <input type="text" id="zip_code" name="zip_code" value="12345" readonly>
+            </div>
+        </div>
+        
+        <div class="button-container">
+            <button id="edit-button" type="button" onclick="toggleEdit(true)">Edit</button>
+            <button id="cancel-button" type="button" onclick="toggleEdit(false)" style="display: none;">Cancel</button>
+            <button id="save-button" type="button" style="display: none;">Save</button>
+        </div>
+    </div>
+
+    <script>
+        function toggleEdit(isEditing) {
+            const mutableFields = ["phone", "address", "city", "state", "zip_code"];
+            mutableFields.forEach(fieldId => {
+                document.getElementById(fieldId).readOnly = !isEditing;
+                document.getElementById(fieldId).style.backgroundColor = isEditing ? '#333' : '#555';
+            });
+
+            document.getElementById('edit-button').style.display = isEditing ? 'none' : 'block';
+            document.getElementById('cancel-button').style.display = isEditing ? 'block' : 'none';
+            document.getElementById('save-button').style.display = isEditing ? 'block' : 'none';
+        }
+    </script>
+</body>
+</html>
