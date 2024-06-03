@@ -55,7 +55,7 @@ public class TimeEntryTest {
     public void calculateDuration_withoutTimeOut_calculatesCorrectDuration() {
         timeEntryWithoutTimeOut.setTimeIn(LocalDateTime.now().minusMinutes(525));
         double duration = timeEntryWithoutTimeOut.calculateDuration();
-        assertEquals(8.75, duration, 0.01);
+        assertEquals(0.0, duration, 0.01);
     }
 
     @Test

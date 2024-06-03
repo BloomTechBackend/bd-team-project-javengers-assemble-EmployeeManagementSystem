@@ -27,16 +27,16 @@ public class TimeEntry {
     }
 
     /**
-     * Calculates the duration between the time an employee clocked in and either the current time or the time they clocked out.
-     * If the employee has not clocked out, the duration is calculated from the clock-in time to the current time.
+     * Calculates the duration between the time an employee clocked in and the time they clocked out.
+     * If the employee has not clocked out, the duration is set to zero.
      * If the employee has clocked out, the duration is calculated from the clock-in time to the clock-out time.
      * The duration is returned in hours as a double, including fractional hours.
      *
-     * @return the duration between timeIn and timeOut (or the current time if timeOut is null) in hours.
+     * @return the duration between timeIn and timeOut (or zero if timeOut is null) in hours.
      */
     public double calculateDuration() {
         if (timeOut == null) {
-            duration = Duration.between(timeIn, getCurrentTimeStamp()).toMinutes() / 60.0;
+            duration = 0.0;
         } else {
             duration = Duration.between(timeIn, timeOut).toMinutes() / 60.0;
         }
@@ -111,6 +111,7 @@ public class TimeEntry {
     }
 
     public double getDuration() {
+        calculateDuration();
         return duration;
     }
 
