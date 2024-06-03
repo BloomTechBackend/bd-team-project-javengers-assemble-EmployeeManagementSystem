@@ -6,6 +6,7 @@ import org.apache.commons.codec.binary.Base32;
 import org.example.exceptions.InvalidInputFormatError;
 import org.example.utils.StringFormatValidator;
 
+import java.util.Objects;
 import java.util.UUID;
 
 public class Employee {
@@ -52,7 +53,7 @@ public class Employee {
 
     public static class EmployeeBuilder {
         private static final Base32 base32 = new Base32();
-        private final String employeeId; // auto generated
+        private String employeeId; // auto generated
         private String firstName; // required
         private String lastName; // required
         private String middleName;
@@ -87,6 +88,11 @@ public class Employee {
                 bytes[8 + i] = (byte) (lsb >>> 8 * (7 - i));
             }
             return bytes;
+        }
+
+        public EmployeeBuilder withEmployeeId(String employeeId) {
+            this.employeeId = employeeId;
+            return this;
         }
 
         public EmployeeBuilder withFirstName(String firstName) {
@@ -212,7 +218,7 @@ public class Employee {
             }
 
             // Pay Rate Validation
-            if (payRate != null && !StringFormatValidator.validPayrateFormat(payRate)) {
+            if (payRate != null && !StringFormatValidator.validPayRateFormat(payRate)) {
                 throw new InvalidInputFormatError("Invalid pay rate format: " + payRate);
             }
 
@@ -370,7 +376,7 @@ public class Employee {
     }
 
     public void setPayRate(String payRate) {
-        if (!StringFormatValidator.validPayrateFormat(payRate)) {
+        if (!StringFormatValidator.validPayRateFormat(payRate)) {
             throw new InvalidInputFormatError("Invalid pay rate format: " + payRate);
         }
 
@@ -383,6 +389,38 @@ public class Employee {
 
     public void setPermissionAccess(PermissionLevel permissionAccess) {
         this.permissionAccess = permissionAccess;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Employee)) return false;
+        Employee employee = (Employee) o;
+        return isCurrentlyEmployed() == employee.isCurrentlyEmployed() &&
+                Objects.equals(getEmployeeId(), employee.getEmployeeId()) &&
+                Objects.equals(getFirstName(), employee.getFirstName()) &&
+                Objects.equals(getLastName(), employee.getLastName()) &&
+                Objects.equals(getMiddleName(), employee.getMiddleName()) &&
+                Objects.equals(getEmail(), employee.getEmail()) &&
+                Objects.equals(getDepartment(), employee.getDepartment()) &&
+                Objects.equals(getHireDate(), employee.getHireDate()) &&
+                Objects.equals(getTerminatedDate(), employee.getTerminatedDate()) &&
+                Objects.equals(getPhone(), employee.getPhone()) &&
+                Objects.equals(getAddress(), employee.getAddress()) &&
+                Objects.equals(getCity(), employee.getCity()) &&
+                Objects.equals(getState(), employee.getState()) &&
+                Objects.equals(getZipCode(), employee.getZipCode()) &&
+                Objects.equals(getPayRate(), employee.getPayRate()) &&
+                getPermissionAccess() == employee.getPermissionAccess();
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getEmployeeId(), getFirstName(),
+                getLastName(), getMiddleName(), getEmail(),
+                getDepartment(), getHireDate(), isCurrentlyEmployed(),
+                getTerminatedDate(), getPhone(), getAddress(), getCity(),
+                getState(), getZipCode(), getPayRate(), getPermissionAccess());
     }
 
     @Override
