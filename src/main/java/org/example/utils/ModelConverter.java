@@ -1,12 +1,11 @@
 package org.example.utils;
 
+import org.example.dynamodb.model.EmployeeCredentialsModel;
 import org.example.dynamodb.model.EmployeeModel;
 import org.example.dynamodb.model.TimeEntryModel;
-import org.example.exceptions.InvalidEmployeeException;
-import org.example.exceptions.InvalidEmployeeModelException;
-import org.example.exceptions.InvalidTimeEntryException;
-import org.example.exceptions.InvalidTimeEntryModelException;
+import org.example.exceptions.*;
 import org.example.model.Employee;
+import org.example.model.EmployeeCredentials;
 import org.example.model.PermissionLevel;
 import org.example.model.TimeEntry;
 
@@ -206,6 +205,56 @@ public class ModelConverter {
         }
 
         return timeEntryModelList;
+    }
+
+    /**
+     * Converts an {@link EmployeeCredentialsModel} object to an {@link EmployeeCredentials} object.
+     * This method takes the data from an {@code EmployeeCredentialsModel} and constructs an equivalent
+     * {@code EmployeeCredentials} object, converting the {@code lastUpdated} string to a {@code LocalDateTime}.
+     *
+     * @param employeeCredentialsModel the {@link EmployeeCredentialsModel} object to be converted
+     * @return the converted {@link EmployeeCredentials} object
+     */
+    public static EmployeeCredentials fromEmployeeCredentialsModel(EmployeeCredentialsModel employeeCredentialsModel) {
+        if (employeeCredentialsModel == null) {
+            throw new InvalidEmployeeCredentialsModelException("EmployeeCredentialsModel cannot be null!");
+        }
+
+        LocalDateTime lastUpdated = convertStringToLocalDateTime(employeeCredentialsModel.getLastUpdated());
+
+        return new EmployeeCredentials(employeeCredentialsModel.getEmployeeId(), employeeCredentialsModel.getUsername(),
+                employeeCredentialsModel.getSalt(), employeeCredentialsModel.getPassword(), lastUpdated,
+                employeeCredentialsModel.isAccountLocked(), employeeCredentialsModel.isForceChangeAfterLogin(),
+                employeeCredentialsModel.getFailedAttempts());
+    }
+
+    /**
+     * Converts an {@link EmployeeCredentials} object to an {@link EmployeeCredentialsModel} object.
+     * This method takes the data from an {@code EmployeeCredentials} and constructs an equivalent
+     * {@code EmployeeCredentialsModel} object. If the provided {@code employeeCredentials} is null,
+     * an {@code InvalidEmployeeCredentialsException} is thrown.
+     *
+     * @param employeeCredentials the {@link EmployeeCredentials} object to be converted
+     * @return the converted {@link EmployeeCredentialsModel} object
+     * @throws InvalidEmployeeCredentialsException if the provided {@link EmployeeCredentials} is null
+     */
+    public static EmployeeCredentialsModel fromEmployeeCredentials(EmployeeCredentials employeeCredentials) {
+        if (employeeCredentials == null) {
+            throw new InvalidEmployeeCredentialsException("EmployeeCredentials cannot be null!");
+        }
+
+        EmployeeCredentialsModel employeeCredentialsModel = new EmployeeCredentialsModel();
+
+        employeeCredentialsModel.setEmployeeId(employeeCredentials.getEmployeeId());
+        employeeCredentialsModel.setUsername(employeeCredentials.getUsername());
+        employeeCredentialsModel.setSalt(employeeCredentials.getSalt());
+        employeeCredentialsModel.setPassword(employeeCredentials.getPassword());
+        employeeCredentialsModel.setLastUpdated(employeeCredentials.getLastUpdated().toString());
+        employeeCredentialsModel.setAccountLocked(employeeCredentials.isAccountLocked());
+        employeeCredentialsModel.setForceChangeAfterLogin(employeeCredentials.isForceChangeAfterLogin());
+        employeeCredentialsModel.setFailedAttempts(employeeCredentials.getFailedAttempts());
+
+        return employeeCredentialsModel;
     }
 
     /**
