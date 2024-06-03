@@ -2,45 +2,28 @@ package org.example.model;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.util.Objects;
 import java.util.UUID;
 
 public class TimeEntry {
+    private static final LocalDateTime NULL_DATE_TIME = LocalDateTime.of(9999, 1, 1, 00,00,00);
+
     private final String employeeId;
     private final String entryId;
     private LocalDateTime timeIn;
     private LocalDateTime timeOut;
     private double duration;
 
-    /**
-     * Creates a new TimeEntry for an employee when they first clock in.
-     * An entry ID is auto-generated and the current timestamp is recorded as the timeIn.
-     * The initial duration is set to 0.
-     *
-     * @param employeeId the ID of the employee clocking in.
-     */
-    public TimeEntry(String employeeId) {
-        this.employeeId = employeeId;
-        this.entryId = UUID.randomUUID().toString();
-        this.timeIn = getCurrentTimeStamp();
-        this.duration = 0;
+    private TimeEntry(TimeEntryBuilder timeEntryBuilder) {
+        this.employeeId = timeEntryBuilder.employeeId;
+        this.entryId = timeEntryBuilder.entryId;
+        this.timeIn = timeEntryBuilder.timeIn;
+        this.timeOut = timeEntryBuilder.timeOut;
+        this.duration = timeEntryBuilder.duration;
     }
 
-    /**
-     * Creates a new TimeEntry for an employee with specified clock-in and clock-out times.
-     * This constructor is primarily used for administrative purposes when a manual time entry is needed.
-     * An entry ID is auto-generated and the provided timeIn and timeOut timestamps are recorded.
-     * The duration between the timestamps is automatically calculated.
-     *
-     * @param employeeId the ID of the employee to whom the time entry belongs.
-     * @param timeIn the date and time the employee clocked in.
-     * @param timeOut the date and time the employee clocked out.
-     */
-    public TimeEntry(String employeeId, LocalDateTime timeIn, LocalDateTime timeOut) {
-        this.employeeId = employeeId;
-        this.entryId = UUID.randomUUID().toString();
-        this.timeIn = timeIn;
-        this.timeOut = timeOut;
-        calculateDuration();
+    public static TimeEntryBuilder builder() {
+        return new TimeEntryBuilder();
     }
 
     /**
@@ -58,6 +41,48 @@ public class TimeEntry {
             duration = Duration.between(timeIn, timeOut).toMinutes() / 60.0;
         }
         return duration;
+    }
+
+    public static class TimeEntryBuilder {
+        private String employeeId;
+        private String entryId;
+        private LocalDateTime timeIn;
+        private LocalDateTime timeOut;
+        private double duration;
+
+        public TimeEntryBuilder() {
+            this.entryId = UUID.randomUUID().toString();
+            this.timeIn = getCurrentTimeStamp();
+        }
+
+        public TimeEntryBuilder withEmployeeId(String employeeId) {
+            this.employeeId = employeeId;
+            return this;
+        }
+
+        public TimeEntryBuilder withEntryId(String entryId) {
+            this.entryId = entryId;
+            return this;
+        }
+
+        public TimeEntryBuilder withTimeIn(LocalDateTime timeIn) {
+            this.timeIn = timeIn;
+            return this;
+        }
+
+        public TimeEntryBuilder withTimeOut(LocalDateTime timeOut) {
+            this.timeOut = timeOut;
+            return this;
+        }
+
+        public TimeEntryBuilder withDuration(double duration) {
+            this.duration = duration;
+            return this;
+        }
+
+        public TimeEntry build() {
+            return new TimeEntry(this);
+        }
     }
 
     public String getEmployeeId() {
@@ -89,7 +114,35 @@ public class TimeEntry {
         return duration;
     }
 
-    private LocalDateTime getCurrentTimeStamp() {
+    private static LocalDateTime getCurrentTimeStamp() {
         return LocalDateTime.now();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof TimeEntry)) return false;
+        TimeEntry timeEntry = (TimeEntry) o;
+        return Double.compare(getDuration(), timeEntry.getDuration()) == 0 &&
+                Objects.equals(getEmployeeId(), timeEntry.getEmployeeId()) &&
+                Objects.equals(getEntryId(), timeEntry.getEntryId()) &&
+                Objects.equals(getTimeIn(), timeEntry.getTimeIn()) &&
+                Objects.equals(getTimeOut(), timeEntry.getTimeOut());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getEmployeeId(), getEntryId(), getTimeIn(), getTimeOut(), getDuration());
+    }
+
+    @Override
+    public String toString() {
+        return "TimeEntry{\n" +
+                "\nemployeeId='" + employeeId + '\'' +
+                ", \nentryId='" + entryId + '\'' +
+                ", \ntimeIn=" + (timeIn != null ? timeIn : NULL_DATE_TIME) +
+                ", \ntimeOut=" + (timeOut != null ? timeOut : NULL_DATE_TIME) +
+                ", \nduration=" + duration +
+                "\n}";
     }
 }

@@ -18,8 +18,15 @@ public class TimeEntryTest {
 
     @BeforeEach
     public void setUp() {
-        timeEntryWithoutTimeOut = new TimeEntry(employeeId);
-        timeEntryWithTimeOut = new TimeEntry(employeeId, timeIn, timeOut);
+        timeEntryWithoutTimeOut = TimeEntry.builder()
+                .withEmployeeId(employeeId)
+                .build();
+
+        timeEntryWithTimeOut = TimeEntry.builder()
+                .withEmployeeId(employeeId)
+                .withTimeIn(timeIn)
+                .withTimeOut(timeOut)
+                .build();
     }
 
     @Test
