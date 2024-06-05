@@ -1,7 +1,9 @@
 package org.example.model;
 
 import org.example.exceptions.AccountLockedException;
+import org.example.exceptions.InvalidInputFormatException;
 import org.example.utils.CredentialsUtility;
+import org.example.utils.StringFormatValidator;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
@@ -65,6 +67,16 @@ public class EmployeeCredentials {
      * @param password the employee's new password
      */
     public void updatePassword(String password) {
+        if (!StringFormatValidator.validPassword(password)) {
+            String passwordRequirements = "Password must contain the following: \n" +
+                    "At least one uppercase letter\n" +
+                    "At least one lowercase letter\n" +
+                    "At least one number\n" +
+                    "At least one special character: !{}()-._?[]~;:@#$%^&*+=\n" +
+                    "Be at least 8 characters\n" +
+                    "Password cannot contain any whitespaces or begin with a dash \"-\" or a period \".\"";
+            throw new InvalidInputFormatException("Invalid password format! " + passwordRequirements);
+        }
         this.salt = CredentialsUtility.generateSalt();
         this.password = CredentialsUtility.hashPassword(password, this.salt);
         this.lastUpdated = LocalDateTime.now();
@@ -79,6 +91,9 @@ public class EmployeeCredentials {
      * @throws AccountLockedException if the account is locked due to too many failed login attempts
      */
     public boolean verifyCredentials(String password) {
+        if (accountLocked) {
+            throw new AccountLockedException("Account is locked. Please contact your administrator.");
+        }
         if (failedAttempts > 3) {
             this.accountLocked = true;
             throw new AccountLockedException("Account is locked due to too many failed login attempts.");
@@ -116,20 +131,12 @@ public class EmployeeCredentials {
         return username;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
     public LocalDateTime getLastUpdated() {
         return lastUpdated;
     }
 
     public boolean isAccountLocked() {
         return accountLocked;
-    }
-
-    public void setAccountLocked(boolean accountLocked) {
-        this.accountLocked = accountLocked;
     }
 
     public boolean isForceChangeAfterLogin() {

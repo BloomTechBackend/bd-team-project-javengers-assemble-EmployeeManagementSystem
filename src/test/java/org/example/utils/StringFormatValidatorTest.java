@@ -78,4 +78,53 @@ public class StringFormatValidatorTest {
 
         assertFalse(validNameFormatResult, "Provided Name: " + name);
     }
+
+    @ParameterizedTest
+    @ValueSource(strings = {
+            "Valid1!Password",
+            "Valid!Password123",
+            "Valid_Password123!",
+            "Valid-password@1bm",
+            "Valid{Password}123",
+            "Valid1@Password",
+            "Valid`Password~123",
+            "ValidPassword#123",
+            "ValidPassword$123",
+            "ValidPassword%123",
+            "ValidPassword^123",
+            "ValidPassword&123",
+            "ValidPassword*123",
+            "ValidPassword+123",
+            "ValidPassword=123"
+    })
+    void validPassword_withValidPasswords_returnsTrue(String password) {
+        boolean validPasswordFormat = StringFormatValidator.validPassword(password);
+        assertTrue(validPasswordFormat, "Provided Password: " + password);
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {
+            "password",
+            "Password",
+            "PASSWORD",
+            "pass123",
+            "P@sswOrd",
+            "12345678",
+            "abcdefgh",
+            "qwertyui",
+            "!@#$%^&*",
+            "p@$$w0rd",
+            "P@ssword",
+            "1234abcd",
+            "qwerty12",
+            "iloveyou",
+            "letmein",
+            "",
+            "     "
+    })
+    void validPassword_withInvalidPasswords_returnsFalse(String password) {
+        boolean validPasswordFormat = StringFormatValidator.validPassword(password);
+        assertFalse(validPasswordFormat, "Provided Password: " + password);
+    }
+
 }
