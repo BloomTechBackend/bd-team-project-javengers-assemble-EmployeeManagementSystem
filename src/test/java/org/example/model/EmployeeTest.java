@@ -1,7 +1,7 @@
 package org.example.model;
 
 
-import org.example.exceptions.InvalidInputFormatError;
+import org.example.exceptions.InvalidInputFormatException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -67,7 +67,7 @@ public class EmployeeTest {
 
     @Test
     public void constructor_withoutFirstName_throwsInvalidInputFormatException(){
-        assertThrows(InvalidInputFormatError.class, () -> {
+        assertThrows(InvalidInputFormatException.class, () -> {
             Employee employee = new Employee.EmployeeBuilder()
                     .withLastName("Test")
                     .build();
@@ -76,7 +76,7 @@ public class EmployeeTest {
 
     @Test
     public void constructor_withoutLastName_throwsInvalidInputFormatException(){
-        assertThrows(InvalidInputFormatError.class, () -> {
+        assertThrows(InvalidInputFormatException.class, () -> {
             Employee employee = Employee.builder()
                     .withFirstName("Test")
                     .build();
@@ -85,7 +85,7 @@ public class EmployeeTest {
 
     @Test
     public void constructor_WithInvalidMiddleName_throwsInvalidInputFormatException() {
-        assertThrows(InvalidInputFormatError.class, () -> {
+        assertThrows(InvalidInputFormatException.class, () -> {
             Employee.builder()
                     .withFirstName("Name")
                     .withLastName("Name")
@@ -96,7 +96,7 @@ public class EmployeeTest {
 
     @Test
     public void constructor_WithInvalidEmail_throwsInvalidInputFormatException() {
-        assertThrows(InvalidInputFormatError.class, () -> {
+        assertThrows(InvalidInputFormatException.class, () -> {
             Employee.builder()
                     .withFirstName("Name")
                     .withLastName("Name")
@@ -107,7 +107,7 @@ public class EmployeeTest {
 
     @Test
     public void constructor_WithInvalidPhoneNumber_throwsInvalidInputFormatException() {
-        assertThrows(InvalidInputFormatError.class, () -> {
+        assertThrows(InvalidInputFormatException.class, () -> {
             Employee.builder()
                     .withFirstName("Name")
                     .withLastName("Name")
@@ -118,7 +118,7 @@ public class EmployeeTest {
 
     @Test
     public void constructor_WithInvalidCityName_throwsInvalidInputFormatException() {
-        assertThrows(InvalidInputFormatError.class, () -> {
+        assertThrows(InvalidInputFormatException.class, () -> {
             Employee.builder()
                     .withFirstName("Name")
                     .withLastName("Name")
@@ -129,7 +129,7 @@ public class EmployeeTest {
 
     @Test
     public void constructor_WithInvalidStateName_throwsInvalidInputFormatException() {
-        assertThrows(InvalidInputFormatError.class, () -> {
+        assertThrows(InvalidInputFormatException.class, () -> {
             Employee.builder()
                     .withFirstName("Name")
                     .withLastName("Name")
@@ -140,7 +140,7 @@ public class EmployeeTest {
 
     @Test
     public void constructor_WithInvalidZipCode_throwsInvalidInputFormatException() {
-        assertThrows(InvalidInputFormatError.class, () -> {
+        assertThrows(InvalidInputFormatException.class, () -> {
             Employee.builder()
                     .withFirstName("Name")
                     .withLastName("Name")
@@ -151,7 +151,7 @@ public class EmployeeTest {
 
     @Test
     public void constructor_WithInvalidPayRate_throwsInvalidInputFormatException() {
-        assertThrows(InvalidInputFormatError.class, () -> {
+        assertThrows(InvalidInputFormatException.class, () -> {
             Employee.builder()
                     .withFirstName("Name")
                     .withLastName("Name")
@@ -178,14 +178,14 @@ public class EmployeeTest {
 
     @Test
     public void setFirstName_withNullValue_throwsInvalidInputFormatException() {
-        assertThrows(InvalidInputFormatError.class, () -> {
+        assertThrows(InvalidInputFormatException.class, () -> {
             validBaseEmployee.setFirstName(null);
         });
     }
 
     @Test
     public void setFirstName_withInvalidFormat_throwsInvalidInputFormatException() {
-        assertThrows(InvalidInputFormatError.class, () -> {
+        assertThrows(InvalidInputFormatException.class, () -> {
             validBaseEmployee.setFirstName("Name123!");
         });
     }
@@ -208,14 +208,14 @@ public class EmployeeTest {
 
     @Test
     public void setLastName_withNullValue_throwsInvalidInputFormatException() {
-        assertThrows(InvalidInputFormatError.class, () -> {
+        assertThrows(InvalidInputFormatException.class, () -> {
             validBaseEmployee.setLastName(null);
         });
     }
 
     @Test
     public void setLastName_withInvalidFormat_throwsInvalidInputFormatException() {
-        assertThrows(InvalidInputFormatError.class, () -> {
+        assertThrows(InvalidInputFormatException.class, () -> {
             validBaseEmployee.setLastName("Name123!");
         });
     }
@@ -234,7 +234,7 @@ public class EmployeeTest {
 
     @Test
     public void setMiddleName_withInvalidFormat_throwsInvalidInputFormatException() {
-        assertThrows(InvalidInputFormatError.class, () -> {
+        assertThrows(InvalidInputFormatException.class, () -> {
             validBaseEmployee.setMiddleName("Name123!");
         });
     }
@@ -255,7 +255,7 @@ public class EmployeeTest {
 
     @Test
     public void setEmail_withInvalidEmailFormat_throwsInvalidInputFormatException() {
-        assertThrows(InvalidInputFormatError.class, () -> {
+        assertThrows(InvalidInputFormatException.class, () -> {
             validBaseEmployee.setEmail("email#email.com");
         });
     }
@@ -285,7 +285,7 @@ public class EmployeeTest {
 
     @Test
     public void setPhone_withInvalidPhoneFormat_throwsInvalidInputFormatException() {
-        assertThrows(InvalidInputFormatError.class, () -> {
+        assertThrows(InvalidInputFormatException.class, () -> {
             validBaseEmployee.setPhone("+2 (123) 459-1235");
         });
     }
@@ -303,7 +303,7 @@ public class EmployeeTest {
 
     @Test
     public void setCity_withInvalidCityFormat_throwsInvalidInputFormatException() {
-        assertThrows(InvalidInputFormatError.class, () -> {
+        assertThrows(InvalidInputFormatException.class, () -> {
             validBaseEmployee.setCity("Invalid  City Name");
         });
     }
@@ -321,7 +321,7 @@ public class EmployeeTest {
 
     @Test
     public void setState_withInvalidStateFormat_throwsInvalidInputFormatException() {
-        assertThrows(InvalidInputFormatError.class, () -> {
+        assertThrows(InvalidInputFormatException.class, () -> {
             validBaseEmployee.setState("Invalid-- State Name");
         });
     }
@@ -339,7 +339,7 @@ public class EmployeeTest {
 
     @Test
     public void setZipCode_withInvalidZipCodeFormat_throwsInvalidInputFormatException() {
-        assertThrows(InvalidInputFormatError.class, () -> {
+        assertThrows(InvalidInputFormatException.class, () -> {
             validBaseEmployee.setZipCode("Inval-Zip1");
         });
     }
@@ -357,7 +357,7 @@ public class EmployeeTest {
 
     @Test
     public void setPayRate_withInvalidPayRateFormat_throwsInvalidInputFormatException() {
-        assertThrows(InvalidInputFormatError.class, () -> {
+        assertThrows(InvalidInputFormatException.class, () -> {
             validBaseEmployee.setPayRate("6250/mon");
         });
     }

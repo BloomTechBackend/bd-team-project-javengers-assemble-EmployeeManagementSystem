@@ -57,7 +57,7 @@ public class EmployeeCredentialsTest {
 
     @Test
     public void testUpdatePassword() {
-        String newPassword = "newPassword123";
+        String newPassword = "newPassword123!";
         String newSalt = "newRandomSalt";
         String newHashedPassword = "newHashedPassword";
 

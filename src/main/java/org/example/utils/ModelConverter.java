@@ -263,7 +263,7 @@ public class ModelConverter {
      * @param localDateString the String to convert
      * @return the converted LocalDate, or null if the input string is null
      */
-    private static LocalDate convertStringToLocalDate(String localDateString) {
+    public static LocalDate convertStringToLocalDate(String localDateString) {
         return localDateString != null ? LocalDate.parse(localDateString, DATE_FORMATTER) : null;
     }
 
@@ -283,7 +283,7 @@ public class ModelConverter {
      * @param localDateTimeString the String to convert
      * @return the converted LocalDateTime, or null if the input string is null
      */
-    private static LocalDateTime convertStringToLocalDateTime(String localDateTimeString) {
+    public static LocalDateTime convertStringToLocalDateTime(String localDateTimeString) {
         return localDateTimeString != null ? LocalDateTime.parse(localDateTimeString, DATE_TIME_FORMATTER) : null;
     }
 

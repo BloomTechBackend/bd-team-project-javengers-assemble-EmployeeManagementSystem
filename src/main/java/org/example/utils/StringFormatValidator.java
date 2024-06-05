@@ -118,4 +118,37 @@ public class StringFormatValidator {
         Pattern unitedStatesPhoneNumberPattern = Pattern.compile("\\+1-\\d{3}-\\d{3}-\\d{4}");
         return unitedStatesPhoneNumberPattern.matcher(phoneNumber).find();
     }
+
+    /**
+     * Validates a password against a specified pattern.
+     *
+     * This method checks if a given password meets the following criteria:
+     * <ul>
+     *     <li>Contains at least one lowercase letter</li>
+     *     <li>Contains at least one uppercase letter</li>
+     *     <li>Contains at least one digit</li>
+     *     <li>Contains at least one special character among the following: !{}()\-._?[]~;:@#$%^&*+=</li>
+     *     <li>Does not start with a dash or period</li>
+     *     <li>Is at least 8 characters long</li>
+     * </ul>
+     *
+     * @param password the password to validate
+     * @return {@code true} if the password meets the specified criteria, {@code false} otherwise
+     */
+    public static boolean validPassword(String password) {
+        Pattern PASSWORD_PATTERN = Pattern.compile(
+                "^(?=.*[a-z])" +            // at least one lowercase letter
+                        "(?=.*[A-Z])" +            // at least one uppercase letter
+                        "(?=.*[0-9])" +            // at least one digit
+                        "(?=.*[!{}()\\-._?\\[\\]~;:@#$%^&*+=])" + // at least one special character
+                        "(?!^[-.])(?=\\S+$).{8,}$"           // no dash or period as first character, min length 8
+        );
+
+        if (password == null || password.isEmpty()) {
+            return false;
+        }
+
+        // Validate against the password pattern
+        return PASSWORD_PATTERN.matcher(password).matches();
+    }
 }

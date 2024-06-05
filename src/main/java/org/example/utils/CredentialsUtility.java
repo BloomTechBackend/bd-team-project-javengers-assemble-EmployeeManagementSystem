@@ -1,5 +1,7 @@
 package org.example.utils;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.bouncycastle.crypto.generators.Argon2BytesGenerator;
 import org.bouncycastle.crypto.params.Argon2Parameters;
 
@@ -7,6 +9,7 @@ import java.security.SecureRandom;
 import java.util.Base64;
 
 public class CredentialsUtility {
+    private static final Logger log = LogManager.getLogger(CredentialsUtility.class);
     private static final int SALT_LENGTH = 16;
     private static final int HASH_LENGTH = 32;
 
@@ -40,4 +43,5 @@ public class CredentialsUtility {
         String computedHash = hashPassword(password, salt);
         return computedHash.equals(hash);
     }
+
 }

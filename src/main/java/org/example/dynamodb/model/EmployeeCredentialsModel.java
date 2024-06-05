@@ -2,7 +2,6 @@ package org.example.dynamodb.model;
 
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBAttribute;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBHashKey;
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBRangeKey;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTable;
 
 import java.util.Objects;
@@ -18,7 +17,7 @@ public class EmployeeCredentialsModel {
     private boolean forceChangeAfterLogin;
     private int failedAttempts;
 
-    @DynamoDBRangeKey(attributeName = "employee_id")
+    @DynamoDBAttribute(attributeName = "employeeId")
     public String getEmployeeId() {
         return employeeId;
     }
@@ -54,7 +53,7 @@ public class EmployeeCredentialsModel {
         this.password = password;
     }
 
-    @DynamoDBAttribute(attributeName = "last_updated")
+    @DynamoDBAttribute(attributeName = "lastUpdated")
     public String getLastUpdated() {
         return lastUpdated;
     }
@@ -63,7 +62,7 @@ public class EmployeeCredentialsModel {
         this.lastUpdated = lastUpdated;
     }
 
-    @DynamoDBAttribute(attributeName = "account_locked")
+    @DynamoDBAttribute(attributeName = "accountLocked")
     public boolean isAccountLocked() {
         return accountLocked;
     }
@@ -72,7 +71,7 @@ public class EmployeeCredentialsModel {
         this.accountLocked = accountLocked;
     }
 
-    @DynamoDBAttribute(attributeName = "force_change_after_login")
+    @DynamoDBAttribute(attributeName = "forceChangeAfterLogin")
     public boolean isForceChangeAfterLogin() {
         return forceChangeAfterLogin;
     }
