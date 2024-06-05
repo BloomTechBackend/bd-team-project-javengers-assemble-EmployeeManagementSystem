@@ -87,6 +87,7 @@ public class EmployeeModel {
     }
 
     @DynamoDBAttribute(attributeName = "currently_employed")
+    @DynamoDBTyped(DynamoDBMapperFieldModel.DynamoDBAttributeType.BOOL)
     public boolean isCurrentlyEmployed() {
         return currentlyEmployed;
     }
