@@ -1,8 +1,6 @@
 package org.example.dynamodb.model;
 
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBAttribute;
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBHashKey;
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTable;
+import com.amazonaws.services.dynamodbv2.datamodeling.*;
 
 import java.util.Objects;
 
@@ -63,6 +61,7 @@ public class EmployeeCredentialsModel {
     }
 
     @DynamoDBAttribute(attributeName = "accountLocked")
+    @DynamoDBTyped(DynamoDBMapperFieldModel.DynamoDBAttributeType.BOOL)
     public boolean isAccountLocked() {
         return accountLocked;
     }
@@ -72,6 +71,7 @@ public class EmployeeCredentialsModel {
     }
 
     @DynamoDBAttribute(attributeName = "forceChangeAfterLogin")
+    @DynamoDBTyped(DynamoDBMapperFieldModel.DynamoDBAttributeType.BOOL)
     public boolean isForceChangeAfterLogin() {
         return forceChangeAfterLogin;
     }
