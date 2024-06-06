@@ -15,6 +15,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Data Access Object (DAO) for accessing time entry data in the DynamoDB table.
+ * This class provides methods to retrieve, save, and retrieve all time entries for an employee from the DynamoDB table.
+ */
 public class TimeEntryDao {
     private static final Logger log = LogManager.getLogger(TimeEntryDao.class);
     private final DynamoDBMapper dynamoDBMapper;

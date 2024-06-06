@@ -41,7 +41,7 @@ public class EmployeeModel {
         this.firstName = firstName;
     }
 
-    @DynamoDBRangeKey(attributeName = "last_name")
+    @DynamoDBAttribute(attributeName = "last_name")
     public String getLastName() {
         return lastName;
     }
