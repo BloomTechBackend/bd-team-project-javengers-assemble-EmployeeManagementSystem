@@ -12,6 +12,10 @@ import org.example.utils.ModelConverter;
 
 import java.util.List;
 
+/**
+ * Data Access Object (DAO) for accessing employee data in the DynamoDB table.
+ * This class provides methods to retrieve, save, and retrieve all employees from the DynamoDB table.
+ */
 public class EmployeeDao {
     private static final Logger log = LogManager.getLogger(EmployeeDao.class);
     private final DynamoDBMapper dynamoDBMapper;

@@ -8,6 +8,10 @@ import org.example.exceptions.UsernameNotFoundException;
 import org.example.model.EmployeeCredentials;
 import org.example.utils.ModelConverter;
 
+/**
+ * Data Access Object (DAO) for accessing an employee's credentials in the DynamoDB table.
+ * This class provides methods to retrieve and save employee credentials in the DynamoDB table.
+ */
 public class EmployeeCredentialsDao {
     private static final Logger log = LogManager.getLogger(EmployeeCredentialsDao.class);
     private final DynamoDBMapper dynamoDBMapper;

@@ -3,10 +3,7 @@ package org.example.dependency;
 import dagger.Component;
 import javax.inject.Singleton;
 
-import org.example.lambda.AdminResetPasswordHandler;
-import org.example.lambda.LoginHandler;
-import org.example.lambda.NewEmployeeHandler;
-import org.example.lambda.UpdatePasswordHandler;
+import org.example.lambda.*;
 
 @Singleton
 @Component(modules = {DaoModule.class})
@@ -19,5 +16,9 @@ public interface AppComponent {
 
     void inject(AdminResetPasswordHandler handler);
 
-    // void inject(EmployeeHandler); TODO: IMPLEMENT EMPLOYEE HANDLER
+    void inject(GetEmployeeHandler handler);
+
+    void inject(GetAllEmployeesHandler handler);
+
+    void inject(UpdateEmployeeHandler handler);
 }

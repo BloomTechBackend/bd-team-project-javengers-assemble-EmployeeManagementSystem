@@ -6,7 +6,7 @@ public class AdminResetPasswordResult {
     private boolean employeeCredentialsReset;
     private String employeeId;
     private String username;
-    private LocalDateTime lastUpdated;
+    private String lastUpdated;
     private boolean accountLocked;
     private boolean forceChangeAfterLogin;
     private String error;
@@ -15,7 +15,7 @@ public class AdminResetPasswordResult {
         this.employeeCredentialsReset = builder.employeeCredentialsReset;
         this.employeeId = builder.employeeId;
         this.username = builder.username;
-        this.lastUpdated = builder.lastUpdated;
+        this.lastUpdated = builder.lastUpdated != null ? builder.lastUpdated.toString() : null;
         this.accountLocked = builder.accountLocked;
         this.forceChangeAfterLogin = builder.forceChangeAfterLogin;
         this.error = builder.error;
@@ -91,7 +91,7 @@ public class AdminResetPasswordResult {
         return username;
     }
 
-    public LocalDateTime getLastUpdated() {
+    public String getLastUpdated() {
         return lastUpdated;
     }
 

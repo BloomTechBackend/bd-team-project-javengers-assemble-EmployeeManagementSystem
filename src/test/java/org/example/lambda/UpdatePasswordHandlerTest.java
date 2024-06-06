@@ -68,7 +68,7 @@ public class UpdatePasswordHandlerTest {
         assertEquals(result.getEmployeeId(), employeeCredentials.getEmployeeId(), "Result employeeId should match the EmployeeCredentials instance employeeId.");
         assertEquals(result.getUsername(), employeeCredentials.getUsername(), "Result username should match the EmployeeCredentials instance username.");
         assertNotEquals(originalPassword, employeeCredentials.getLastUpdated().toString(), "lastUpdated should not be equal after password update.");
-        assertEquals(result.getLastUpdated(), employeeCredentials.getLastUpdated(), "Result lastUpdated should match the EmployeeCredentials instance lastUpdated.");
+        assertEquals(result.getLastUpdated(), employeeCredentials.getLastUpdated().toString(), "Result lastUpdated should match the EmployeeCredentials instance lastUpdated.");
         assertFalse(result.isAccountLocked(), "Result accountLocked should be false.");
         assertEquals(result.isAccountLocked(), employeeCredentials.isAccountLocked(), "Result accountLocked should match the EmployeeCredentials instance accountLocked");
         assertFalse(result.isForceChangeAfterLogin(), "Result forceChangeAfterLogin should be set to false");

@@ -80,6 +80,9 @@ public class EmployeeCredentials {
         this.salt = CredentialsUtility.generateSalt();
         this.password = CredentialsUtility.hashPassword(password, this.salt);
         this.lastUpdated = LocalDateTime.now();
+        this.forceChangeAfterLogin = false;
+        this.accountLocked = false;
+        this.failedAttempts = 0;
     }
 
     /**
@@ -105,6 +108,7 @@ public class EmployeeCredentials {
             this.failedAttempts++;
         } else {
             this.failedAttempts = 0;
+            this.accountLocked = false;
         }
         return result;
     }

@@ -6,7 +6,7 @@ public class UpdateCredentialsResult {
     private final boolean credentialsUpdated;
     private final String employeeId;
     private final String username;
-    private final LocalDateTime lastUpdated;
+    private final String lastUpdated;
     private final boolean accountLocked;
     private final boolean forceChangeAfterLogin;
     private final int failedAttempts;
@@ -16,7 +16,7 @@ public class UpdateCredentialsResult {
         this.credentialsUpdated = builder.credentialsUpdated;
         this.employeeId = builder.employeeId;
         this.username = builder.username;
-        this.lastUpdated = builder.lastUpdated;
+        this.lastUpdated = builder.lastUpdated != null ? builder.lastUpdated.toString() : null;
         this.accountLocked = builder.accountLocked;
         this.forceChangeAfterLogin = builder.forceChangeAfterLogin;
         this.failedAttempts = builder().failedAttempts;
@@ -96,7 +96,7 @@ public class UpdateCredentialsResult {
         return username;
     }
 
-    public LocalDateTime getLastUpdated() {
+    public String getLastUpdated() {
         return lastUpdated;
     }
 
