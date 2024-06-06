@@ -40,6 +40,9 @@ public class LoginHandler implements RequestHandler<LoginRequest, LoginResult> {
 
             if (!credentialsComparisonResult) {
                 credentialsDao.saveEmployeeCredentials(employeeCredentials);
+                if (employeeCredentials.getFailedAttempts() > 3) {
+                    throw new AccountLockedException("Account is locked due to too many failed login attempts.");
+                }
                 throw new InvalidEmployeeCredentialsException("Invalid Password!");
             }
 

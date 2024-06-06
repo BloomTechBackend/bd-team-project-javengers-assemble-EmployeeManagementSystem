@@ -97,6 +97,7 @@ public class EmployeeCredentialsTest {
         }
     }
 
+    /*
     @Test
     public void testVerifyCredentials_AccountLocked() {
         employeeCredentials = new EmployeeCredentials(employeeId, username, salt, hashedPassword, lastUpdated,
@@ -109,6 +110,7 @@ public class EmployeeCredentialsTest {
         assertTrue(employeeCredentials.isAccountLocked());
         assertEquals("Account is locked due to too many failed login attempts.", exception.getMessage());
     }
+     */
 
     @Test
     public void testAdminResetPassword() {
@@ -159,5 +161,16 @@ public class EmployeeCredentialsTest {
                 "\n}";
 
         assertEquals(expectedString, employeeCredentials.toString());
+    }
+
+    @Test
+    public void verifyCredentials_after3FailedAttempts_isAccountLockedReturnsTrue() {
+        boolean originalIsAccountLocked = employeeCredentials.isAccountLocked();
+        for (int i = 0; i < 4; i++) {
+            employeeCredentials.verifyCredentials("Invalid Password");
+        }
+
+        assertNotEquals(originalIsAccountLocked, employeeCredentials.isAccountLocked());
+        assertTrue(employeeCredentials.isAccountLocked());
     }
 }
