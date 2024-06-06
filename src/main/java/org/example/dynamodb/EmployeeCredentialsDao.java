@@ -54,7 +54,6 @@ public class EmployeeCredentialsDao {
      *
      * @param employeeCredentials the {@link EmployeeCredentials} object to be saved.
      * @return the saved {@link EmployeeCredentialsModel} object.
-     * @throws Exception if any error occurs while saving the employee credentials.
      */
     public EmployeeCredentialsModel saveEmployeeCredentials(EmployeeCredentials employeeCredentials) {
         EmployeeCredentialsModel employeeCredentialsModel;

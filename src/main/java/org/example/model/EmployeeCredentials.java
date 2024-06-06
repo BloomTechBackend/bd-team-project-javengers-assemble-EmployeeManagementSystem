@@ -97,9 +97,9 @@ public class EmployeeCredentials {
         if (accountLocked) {
             throw new AccountLockedException("Account is locked. Please contact your administrator.");
         }
-        if (failedAttempts > 3) {
+        if (this.failedAttempts > 3) {
             this.accountLocked = true;
-            throw new AccountLockedException("Account is locked due to too many failed login attempts.");
+            //throw new AccountLockedException("Account is locked due to too many failed login attempts.");
         }
 
         boolean result = CredentialsUtility.verifyPassword(password, this.salt, this.password);
@@ -140,6 +140,9 @@ public class EmployeeCredentials {
     }
 
     public boolean isAccountLocked() {
+        if (failedAttempts >= 3) {
+            accountLocked = true;
+        }
         return accountLocked;
     }
 

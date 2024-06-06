@@ -61,7 +61,7 @@ public class EmployeeCredentialsModel {
     }
 
     @DynamoDBAttribute(attributeName = "accountLocked")
-    @DynamoDBTyped(DynamoDBMapperFieldModel.DynamoDBAttributeType.BOOL)
+    //@DynamoDBTyped(DynamoDBMapperFieldModel.DynamoDBAttributeType.BOOL)
     public boolean isAccountLocked() {
         return accountLocked;
     }
