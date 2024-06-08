@@ -12,10 +12,7 @@ import org.example.utils.ModelConverter;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Data Access Object (DAO) for accessing time entry data in the DynamoDB table.
@@ -70,9 +67,8 @@ public class TimeEntryDao {
             eav.put(":employeeId", new AttributeValue().withS(employeeId));
 
             DynamoDBQueryExpression<TimeEntryModel> queryExpression = new DynamoDBQueryExpression<TimeEntryModel>()
-                    .withKeyConditionExpression("employeeId = :employeeId")
-                    .withExpressionAttributeValues(eav)
-                    .withLimit(5);
+                    .withKeyConditionExpression("employee_id = :employeeId")
+                    .withExpressionAttributeValues(eav);
 
             List<TimeEntryModel> timeEntryModels = dynamoDBMapper.query(TimeEntryModel.class, queryExpression);
 
@@ -82,11 +78,18 @@ public class TimeEntryDao {
 
             List<TimeEntry> timeEntryList = ModelConverter.fromTimeEntryModelList(timeEntryModels);
 
-            // Sort time entries based on time_in timestamp in descending order
-            timeEntryList.sort(Comparator.comparing(TimeEntry::getTimeIn).reversed());
+            // Sort time entries based on timeIn timestamp in ascending order
+            timeEntryList.sort(Comparator.comparing(TimeEntry::getTimeIn));
+
+            // Extract the last 5 entries
+            List<TimeEntry> lastFiveEntries = new ArrayList<>();
+            int listSize = timeEntryList.size();
+            for (int i = listSize - 1; i >= Math.max(0, listSize - 5); i--) {
+                lastFiveEntries.add(timeEntryList.get(i));
+            }
 
             log.info("Successfully retrieved last 5 Time Entries for Employee ID \"{}\".", employeeId);
-            return timeEntryList;
+            return lastFiveEntries;
         } catch (TimeEntriesNotFoundException e) {
             log.warn("Time Entries for Employee ID \"{}\" not found.", employeeId);
             throw e;
@@ -110,7 +113,7 @@ public class TimeEntryDao {
             eav.put(":employeeId", new AttributeValue().withS(employeeId));
 
             DynamoDBQueryExpression<TimeEntryModel> queryExpression = new DynamoDBQueryExpression<TimeEntryModel>()
-                    .withKeyConditionExpression("employeeId = :employeeId")
+                    .withKeyConditionExpression("employee_id = :employeeId")
                     .withExpressionAttributeValues(eav);
 
             List<TimeEntryModel> timeEntryModels = dynamoDBMapper.query(TimeEntryModel.class, queryExpression);
@@ -120,6 +123,8 @@ public class TimeEntryDao {
             }
 
             List<TimeEntry> timeEntries = ModelConverter.fromTimeEntryModelList(timeEntryModels);
+
+            timeEntries.sort(Comparator.comparing(TimeEntry::getTimeIn));
 
             log.info("Successfully retrieved time entries for Employee ID \"{}\". ", employeeId);
             return timeEntries;
