@@ -50,6 +50,10 @@ public class UpdateTimeEntryHandler implements RequestHandler<UpdateTimeEntryReq
                     .withDuration(request.getDuration())
                     .build();
 
+            if (request.isEmployeeClockOut()) {
+                updatedTimeEntry.recordTimeOut();
+            }
+
             TimeEntryModel savedTimeEntry = timeEntryDao.saveTimeEntry(updatedTimeEntry);
 
             log.info(String.format("Successfully updated time entry. " +
