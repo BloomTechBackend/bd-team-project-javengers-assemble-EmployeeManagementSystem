@@ -8,6 +8,7 @@ public class UpdateTimeEntryRequest {
     private LocalDateTime timeIn;
     private LocalDateTime timeOut;
     private double duration;
+    private boolean employeeClockOut = false;
 
     public String getEmployeeId() {
         return employeeId;
@@ -47,5 +48,13 @@ public class UpdateTimeEntryRequest {
 
     public void setDuration(double duration) {
         this.duration = duration;
+    }
+
+    public boolean isEmployeeClockOut() {
+        return employeeClockOut;
+    }
+
+    public void setEmployeeClockOut(boolean employeeClockOut) {
+        this.employeeClockOut = employeeClockOut;
     }
 }
