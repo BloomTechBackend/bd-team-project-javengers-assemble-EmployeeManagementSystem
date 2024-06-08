@@ -98,7 +98,7 @@ public class ModelConverter {
         employeeModel.setState(employee.getState());
         employeeModel.setZipCode(employee.getZipCode());
         employeeModel.setPayRate(employee.getPayRate());
-        employeeModel.setPermissionAccess(employee.getPermissionAccess().toString());
+        employeeModel.setPermissionAccess(employee.getPermissionAccess().name());
 
         return employeeModel;
     }
@@ -273,7 +273,7 @@ public class ModelConverter {
      * @param date the LocalDate to convert
      * @return the converted String, or null if the input date is null
      */
-    private static String convertFromLocalDateToString(LocalDate date) {
+    public static String convertFromLocalDateToString(LocalDate date) {
         return date != null ? date.format(DATE_FORMATTER) : null;
     }
 

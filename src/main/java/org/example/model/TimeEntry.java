@@ -20,6 +20,7 @@ public class TimeEntry {
         this.timeIn = timeEntryBuilder.timeIn;
         this.timeOut = timeEntryBuilder.timeOut;
         this.duration = timeEntryBuilder.duration;
+        calculateDuration();
     }
 
     public static TimeEntryBuilder builder() {
@@ -41,6 +42,11 @@ public class TimeEntry {
             duration = Duration.between(timeIn, timeOut).toMinutes() / 60.0;
         }
         return duration;
+    }
+
+    public void recordTimeOut() {
+        this.timeOut = getCurrentTimeStamp();
+        calculateDuration();
     }
 
     public static class TimeEntryBuilder {

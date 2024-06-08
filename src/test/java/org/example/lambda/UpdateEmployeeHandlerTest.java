@@ -1,11 +1,14 @@
 package org.example.lambda;
 
 import org.example.dynamodb.EmployeeDao;
+import org.example.dynamodb.model.EmployeeModel;
 import org.example.model.Employee;
 import org.example.model.PermissionLevel;
 import org.example.model.requests.UpdateEmployeeRequest;
 import org.example.model.results.UpdateEmployeeResult;
 import org.example.utils.ModelConverter;
+import org.example.utils.gson.JsonUtil;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -17,9 +20,10 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static org.mockito.MockitoAnnotations.initMocks;
+import static org.mockito.MockitoAnnotations.openMocks;
 
 public class UpdateEmployeeHandlerTest {
+    private AutoCloseable mocks;
     @Mock
     private EmployeeDao employeeDao;
 
@@ -31,7 +35,7 @@ public class UpdateEmployeeHandlerTest {
 
     @BeforeEach
     void setUp() {
-        initMocks(this);
+        mocks = openMocks(this);
 
         String employeeId = "Emp123456";
         String firstName = "John";
@@ -65,6 +69,7 @@ public class UpdateEmployeeHandlerTest {
                 .build();
 
         request = new UpdateEmployeeRequest();
+        request.setEmployeeId(employeeId);
         request.setFirstName(firstName);
         request.setLastName(lastName);
         request.setMiddleName(middleName);
@@ -81,13 +86,21 @@ public class UpdateEmployeeHandlerTest {
 
     }
 
+    @AfterEach
+    void tearDown() throws Exception {
+        mocks.close();
+    }
+
     @Test
-    public void handleRequest_validRequest_createsNewEmployee() {
+    public void handleRequest_validRequest_updatesEmployee() {
         // Given
-        when(employeeDao.saveEmployee(any(Employee.class))).thenReturn(null);
+        EmployeeModel employeeModel = ModelConverter.fromEmployee(employee);
+        employeeModel.setPayRate(request.getPayRate());
+        employeeModel.setPermissionAccess(request.getPermissionAccess().name());
+        when(employeeDao.saveEmployee(any(Employee.class))).thenReturn(employeeModel);
 
         // When
-        UpdateEmployeeResult result = updateEmployeeHandler.handleRequest(request, null);
+        UpdateEmployeeResult result = JsonUtil.fromJson(updateEmployeeHandler.handleRequest(request, null), UpdateEmployeeResult.class);
 
         // Then
         verify(employeeDao).saveEmployee(any(Employee.class));
@@ -104,7 +117,7 @@ public class UpdateEmployeeHandlerTest {
         when(employeeDao.saveEmployee(any(Employee.class))).thenThrow(new RuntimeException("An unexpected error occurred."));
 
         // When
-        UpdateEmployeeResult result = updateEmployeeHandler.handleRequest(request, null);
+        UpdateEmployeeResult result = JsonUtil.fromJson(updateEmployeeHandler.handleRequest(request, null), UpdateEmployeeResult.class);
 
         // Then
         assertFalse(result.isEmployeeUpdated());

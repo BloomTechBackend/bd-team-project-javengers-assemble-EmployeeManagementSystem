@@ -1,15 +1,14 @@
 package org.example.model.results;
 
-import org.example.dynamodb.model.EmployeeModel;
 import org.example.model.Employee;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class GetAllEmployeesResult {
-    private boolean employeesRetrieved;
-    private List<EmployeeModel> employeeList;
-    private String error;
+public class GetAllEmployeesResult implements Result {
+    private final boolean employeesRetrieved;
+    private final List<Employee> employeeList;
+    private final String error;
 
     private GetAllEmployeesResult(Builder builder) {
         this.employeesRetrieved = builder.employeesRetrieved;
@@ -23,7 +22,7 @@ public class GetAllEmployeesResult {
 
     public static class Builder {
         private boolean employeesRetrieved;
-        private List<EmployeeModel> employeeList = new ArrayList<>();
+        private List<Employee> employeeList = new ArrayList<>();
         private String error;
 
         public Builder() {
@@ -35,7 +34,7 @@ public class GetAllEmployeesResult {
             return this;
         }
 
-        public Builder withEmployeesList(List<EmployeeModel> employeesList) {
+        public Builder withEmployeesList(List<Employee> employeesList) {
             this.employeeList = employeesList;
             return this;
         }
@@ -54,7 +53,7 @@ public class GetAllEmployeesResult {
         return employeesRetrieved;
     }
 
-    public List<EmployeeModel> getEmployeeList() {
+    public List<Employee> getEmployeeList() {
         return employeeList;
     }
 

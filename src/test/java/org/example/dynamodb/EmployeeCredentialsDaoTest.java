@@ -4,6 +4,7 @@ import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
 import org.example.dynamodb.model.EmployeeCredentialsModel;
 import org.example.exceptions.UsernameNotFoundException;
 import org.example.model.EmployeeCredentials;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -13,10 +14,10 @@ import java.time.LocalDateTime;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
-import static org.mockito.MockitoAnnotations.initMocks;
+import static org.mockito.MockitoAnnotations.openMocks;
 
 public class EmployeeCredentialsDaoTest {
-
+    AutoCloseable mocks;
     @Mock
     private DynamoDBMapper dynamoDBMapper;
 
@@ -37,7 +38,7 @@ public class EmployeeCredentialsDaoTest {
 
     @BeforeEach
     public void setUp() {
-        initMocks(this);
+        mocks = openMocks(this);
         employeeCredentialsModel = new EmployeeCredentialsModel();
         employeeCredentialsModel.setUsername(username);
         employeeCredentialsModel.setEmployeeId(employeeId);
@@ -49,6 +50,11 @@ public class EmployeeCredentialsDaoTest {
         employeeCredentialsModel.setFailedAttempts(failedAttempts);
 
         employeeCredentials = new EmployeeCredentials(employeeId, username, salt, password, lastUpdated, accountLocked, forceChangeAfterLogin, failedAttempts);
+    }
+
+    @AfterEach
+    public void tearDown() throws Exception {
+        mocks.close();
     }
 
     @Test

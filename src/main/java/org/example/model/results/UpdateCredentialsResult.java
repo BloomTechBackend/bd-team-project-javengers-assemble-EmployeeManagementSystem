@@ -1,8 +1,6 @@
 package org.example.model.results;
 
-import java.time.LocalDateTime;
-
-public class UpdateCredentialsResult {
+public class UpdateCredentialsResult implements Result {
     private final boolean credentialsUpdated;
     private final String employeeId;
     private final String username;
@@ -16,7 +14,7 @@ public class UpdateCredentialsResult {
         this.credentialsUpdated = builder.credentialsUpdated;
         this.employeeId = builder.employeeId;
         this.username = builder.username;
-        this.lastUpdated = builder.lastUpdated != null ? builder.lastUpdated.toString() : null;
+        this.lastUpdated = builder.lastUpdated;
         this.accountLocked = builder.accountLocked;
         this.forceChangeAfterLogin = builder.forceChangeAfterLogin;
         this.failedAttempts = builder().failedAttempts;
@@ -31,7 +29,7 @@ public class UpdateCredentialsResult {
         private boolean credentialsUpdated;
         private String employeeId;
         private String username;
-        private LocalDateTime lastUpdated;
+        private String lastUpdated;
         private boolean accountLocked;
         private boolean forceChangeAfterLogin;
         private int failedAttempts;
@@ -53,7 +51,7 @@ public class UpdateCredentialsResult {
             return this;
         }
 
-        public Builder withLastUpdated(LocalDateTime lastUpdated) {
+        public Builder withLastUpdated(String lastUpdated) {
             this.lastUpdated = lastUpdated;
             return this;
         }

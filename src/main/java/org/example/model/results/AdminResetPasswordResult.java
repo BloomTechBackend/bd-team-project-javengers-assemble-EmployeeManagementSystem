@@ -2,20 +2,20 @@ package org.example.model.results;
 
 import java.time.LocalDateTime;
 
-public class AdminResetPasswordResult {
-    private boolean employeeCredentialsReset;
-    private String employeeId;
-    private String username;
-    private String lastUpdated;
-    private boolean accountLocked;
-    private boolean forceChangeAfterLogin;
-    private String error;
+public class AdminResetPasswordResult implements Result {
+    private final boolean employeeCredentialsReset;
+    private final String employeeId;
+    private final String username;
+    private final String lastUpdated;
+    private final boolean accountLocked;
+    private final boolean forceChangeAfterLogin;
+    private final String error;
 
     private AdminResetPasswordResult(Builder builder) {
         this.employeeCredentialsReset = builder.employeeCredentialsReset;
         this.employeeId = builder.employeeId;
         this.username = builder.username;
-        this.lastUpdated = builder.lastUpdated != null ? builder.lastUpdated.toString() : null;
+        this.lastUpdated = builder.lastUpdated;
         this.accountLocked = builder.accountLocked;
         this.forceChangeAfterLogin = builder.forceChangeAfterLogin;
         this.error = builder.error;
@@ -29,7 +29,7 @@ public class AdminResetPasswordResult {
         private boolean employeeCredentialsReset;
         private String employeeId;
         private String username;
-        private LocalDateTime lastUpdated;
+        private String lastUpdated;
         private boolean accountLocked;
         private boolean forceChangeAfterLogin;
         private String error;
@@ -53,7 +53,7 @@ public class AdminResetPasswordResult {
             return this;
         }
 
-        public Builder withLastUpdated(LocalDateTime lastUpdated) {
+        public Builder withLastUpdated(String lastUpdated) {
             this.lastUpdated = lastUpdated;
             return this;
         }

@@ -7,6 +7,7 @@ import org.example.dynamodb.model.TimeEntryModel;
 import org.example.exceptions.TimeEntriesNotFoundException;
 import org.example.model.TimeEntry;
 import org.example.utils.ModelConverter;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -19,9 +20,10 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
-import static org.mockito.MockitoAnnotations.initMocks;
+import static org.mockito.MockitoAnnotations.openMocks;
 
 public class TimeEntryDaoTest {
+    private AutoCloseable mocks;
     @Mock
     DynamoDBMapper dynamoDBMapper;
     @InjectMocks
@@ -38,7 +40,7 @@ public class TimeEntryDaoTest {
 
     @BeforeEach
     public void setUp() {
-        initMocks(this);
+        mocks = openMocks(this);
 
         // TimeEntry Setup
         timeEntry = TimeEntry.builder()
@@ -104,6 +106,11 @@ public class TimeEntryDaoTest {
         timeEntryModelList.add(timeEntryModel3);
         timeEntryModelList.add(timeEntryModel4);
 
+    }
+
+    @AfterEach
+    public void tearDown() throws Exception {
+        mocks.close();
     }
 
     @Test

@@ -71,7 +71,6 @@ public class EmployeeCredentialsModel {
     }
 
     @DynamoDBAttribute(attributeName = "forceChangeAfterLogin")
-    @DynamoDBTyped(DynamoDBMapperFieldModel.DynamoDBAttributeType.BOOL)
     public boolean isForceChangeAfterLogin() {
         return forceChangeAfterLogin;
     }

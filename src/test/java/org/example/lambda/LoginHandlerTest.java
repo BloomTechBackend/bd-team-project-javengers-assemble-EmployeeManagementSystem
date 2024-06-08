@@ -1,12 +1,13 @@
 package org.example.lambda;
 
-import com.amazonaws.services.lambda.runtime.Context;
 import org.example.dynamodb.EmployeeCredentialsDao;
 import org.example.exceptions.AccountLockedException;
 import org.example.exceptions.UsernameNotFoundException;
 import org.example.model.EmployeeCredentials;
 import org.example.model.requests.LoginRequest;
 import org.example.model.results.LoginResult;
+import org.example.utils.gson.JsonUtil;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -17,9 +18,10 @@ import java.time.LocalDateTime;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
-import static org.mockito.MockitoAnnotations.initMocks;
+import static org.mockito.MockitoAnnotations.openMocks;
 
 public class LoginHandlerTest {
+    private AutoCloseable mocks;
 
     @Mock
     private EmployeeCredentialsDao credentialsDao;
@@ -32,7 +34,7 @@ public class LoginHandlerTest {
 
     @BeforeEach
     void setUp() {
-        initMocks(this);
+        mocks = openMocks(this);
         request = new LoginRequest();
         request.setUsername("jdoe");
         request.setPassword("p@ssw0rd");
@@ -59,13 +61,18 @@ public class LoginHandlerTest {
         );
     }
 
+    @AfterEach
+    void tearDown() throws Exception {
+        mocks.close();
+    }
+
     @Test
     public void handleRequest_validCredentials_loginSuccess() throws Exception {
         // Given
         when(credentialsDao.getEmployeeCredentials(request.getUsername())).thenReturn(employeeCredentials);
 
         // When
-        LoginResult result = loginHandler.handleRequest(request, null);
+        LoginResult result = JsonUtil.fromJson(loginHandler.handleRequest(request, null), LoginResult.class);
 
         // Then
         verify(credentialsDao, never()).saveEmployeeCredentials(any(EmployeeCredentials.class));
@@ -83,7 +90,7 @@ public class LoginHandlerTest {
 
         // When
         request.setPassword("Invalid Password");
-        LoginResult result = loginHandler.handleRequest(request, null);
+        LoginResult result = JsonUtil.fromJson(loginHandler.handleRequest(request, null), LoginResult.class);
 
         // Then
         verify(credentialsDao).saveEmployeeCredentials(any(EmployeeCredentials.class));
@@ -98,7 +105,7 @@ public class LoginHandlerTest {
         when(credentialsDao.getEmployeeCredentials(request.getUsername().toLowerCase())).thenThrow(new AccountLockedException("Account is locked"));
 
         // When
-        LoginResult result = loginHandler.handleRequest(request, mock(Context.class));
+        LoginResult result = JsonUtil.fromJson(loginHandler.handleRequest(request, null), LoginResult.class);
 
         // Then
         assertFalse(result.isLoginSuccess());
@@ -113,7 +120,7 @@ public class LoginHandlerTest {
         when(credentialsDao.getEmployeeCredentials(request.getUsername().toLowerCase())).thenThrow(new UsernameNotFoundException("Username not found"));
 
         // When
-        LoginResult result = loginHandler.handleRequest(request, mock(Context.class));
+        LoginResult result = JsonUtil.fromJson(loginHandler.handleRequest(request, null), LoginResult.class);
 
         // Then
         assertFalse(result.isLoginSuccess());
@@ -127,7 +134,7 @@ public class LoginHandlerTest {
         when(credentialsDao.getEmployeeCredentials(request.getUsername().toLowerCase())).thenThrow(new RuntimeException("Unexpected error"));
 
         // When
-        LoginResult result = loginHandler.handleRequest(request, mock(Context.class));
+        LoginResult result = JsonUtil.fromJson(loginHandler.handleRequest(request, null), LoginResult.class);
 
         // Then
         assertFalse(result.isLoginSuccess());
