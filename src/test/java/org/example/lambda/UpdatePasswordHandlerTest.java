@@ -6,6 +6,8 @@ import org.example.model.EmployeeCredentials;
 import org.example.model.requests.UpdateCredentialsRequest;
 import org.example.model.results.UpdateCredentialsResult;
 import org.example.utils.ModelConverter;
+import org.example.utils.gson.JsonUtil;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -14,11 +16,13 @@ import org.mockito.Mock;
 import java.time.LocalDateTime;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static org.mockito.MockitoAnnotations.initMocks;
+import static org.mockito.MockitoAnnotations.openMocks;
 
 public class UpdatePasswordHandlerTest {
+    private AutoCloseable mocks;
     @InjectMocks
     UpdatePasswordHandler updatePasswordHandler;
 
@@ -29,7 +33,7 @@ public class UpdatePasswordHandlerTest {
 
     @BeforeEach
     void setUp() {
-        initMocks(this);
+        mocks = openMocks(this);
 
         String employeeId = "Emp123456";
         String username = "jdoe";
@@ -44,6 +48,11 @@ public class UpdatePasswordHandlerTest {
                 password, lastUpdated, accountLocked, forceChangeAfterLogin,failedAttempts);
     }
 
+    @AfterEach
+    void tearDown() throws Exception {
+        mocks.close();
+    }
+
     @Test
     public void handleRequest_validRequest_updatesEmployeesCredentials() {
         // Given
@@ -55,10 +64,14 @@ public class UpdatePasswordHandlerTest {
         request.setPassword("NewPassword1!");
 
         when(credentialsDao.getEmployeeCredentials(request.getUsername())).thenReturn(employeeCredentials);
-        when(credentialsDao.saveEmployeeCredentials(employeeCredentials)).thenReturn(ModelConverter.fromEmployeeCredentials(employeeCredentials));
+        when(credentialsDao.saveEmployeeCredentials(any(EmployeeCredentials.class)))
+                .thenAnswer(invocation -> {
+                    EmployeeCredentials arg = invocation.getArgument(0);
+                    return ModelConverter.fromEmployeeCredentials(arg);
+                });
 
         // When
-        UpdateCredentialsResult result = updatePasswordHandler.handleRequest(request, null);
+        UpdateCredentialsResult result = JsonUtil.fromJson(updatePasswordHandler.handleRequest(request, null), UpdateCredentialsResult.class);
 
         //Then
         verify(credentialsDao).saveEmployeeCredentials(employeeCredentials);
@@ -86,7 +99,7 @@ public class UpdatePasswordHandlerTest {
         when(credentialsDao.getEmployeeCredentials(request.getUsername())).thenThrow(new InvalidInputFormatException("Invalid password format. "));
 
         // When
-        UpdateCredentialsResult result = updatePasswordHandler.handleRequest(request, null);
+        UpdateCredentialsResult result = JsonUtil.fromJson(updatePasswordHandler.handleRequest(request, null), UpdateCredentialsResult.class);
 
         // Then
         assertFalse(result.isCredentialsUpdated());
@@ -106,7 +119,7 @@ public class UpdatePasswordHandlerTest {
         when(credentialsDao.getEmployeeCredentials(request.getUsername())).thenThrow(new RuntimeException("An unexpected error occurred. "));
 
         // When
-        UpdateCredentialsResult result = updatePasswordHandler.handleRequest(request, null);
+        UpdateCredentialsResult result = JsonUtil.fromJson(updatePasswordHandler.handleRequest(request, null), UpdateCredentialsResult.class);
 
         // Then
         assertFalse(result.isCredentialsUpdated());

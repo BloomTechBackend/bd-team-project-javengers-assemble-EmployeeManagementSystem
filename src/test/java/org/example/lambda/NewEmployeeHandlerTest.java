@@ -8,6 +8,9 @@ import org.example.model.EmployeeCredentials;
 import org.example.model.PermissionLevel;
 import org.example.model.requests.NewEmployeeRequest;
 import org.example.model.results.NewEmployeeResult;
+import org.example.utils.ModelConverter;
+import org.example.utils.gson.JsonUtil;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -18,9 +21,10 @@ import java.time.LocalDateTime;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
-import static org.mockito.MockitoAnnotations.initMocks;
+import static org.mockito.MockitoAnnotations.openMocks;
 
 public class NewEmployeeHandlerTest {
+    private AutoCloseable mocks;
 
     @Mock
     private EmployeeCredentialsDao credentialsDao;
@@ -37,7 +41,7 @@ public class NewEmployeeHandlerTest {
 
     @BeforeEach
     void setUp() {
-        initMocks(this);
+        mocks = openMocks(this);
 
         String employeeId = "Emp123456";
         String firstName = "John";
@@ -99,15 +103,20 @@ public class NewEmployeeHandlerTest {
                 password, lastUpdated, accountLocked, forceChangeAfterLogin,failedAttempts);
     }
 
+    @AfterEach
+    void tearDown() throws Exception {
+        mocks.close();
+    }
+
     @Test
     public void handleRequest_validRequest_createsNewEmployee() {
         // Given
         when(credentialsDao.getEmployeeCredentials(request.getUsername())).thenThrow(new UsernameNotFoundException("Username not found"));
-        when(employeeDao.saveEmployee(any(Employee.class))).thenReturn(null);
-        when(credentialsDao.saveEmployeeCredentials(any(EmployeeCredentials.class))).thenReturn(null);
+        when(employeeDao.saveEmployee(any(Employee.class))).thenReturn(ModelConverter.fromEmployee(newEmployee));
+        when(credentialsDao.saveEmployeeCredentials(any(EmployeeCredentials.class))).thenReturn(ModelConverter.fromEmployeeCredentials(employeeCredentials));
 
         // When
-        NewEmployeeResult result = newEmployeeHandler.handleRequest(request, null);
+        NewEmployeeResult result = JsonUtil.fromJson(newEmployeeHandler.handleRequest(request, null), NewEmployeeResult.class);
 
         // Then
         verify(employeeDao).saveEmployee(any(Employee.class));
@@ -125,7 +134,7 @@ public class NewEmployeeHandlerTest {
         when(credentialsDao.getEmployeeCredentials(request.getUsername())).thenReturn(employeeCredentials);
 
         // When
-        NewEmployeeResult result = newEmployeeHandler.handleRequest(request, null);
+        NewEmployeeResult result = JsonUtil.fromJson(newEmployeeHandler.handleRequest(request, null), NewEmployeeResult.class);
 
         // Then
         assertFalse(result.isNewEmployeeCreated());
@@ -138,7 +147,7 @@ public class NewEmployeeHandlerTest {
         when(credentialsDao.getEmployeeCredentials(request.getUsername())).thenThrow(new RuntimeException("An unexpected error occurred."));
 
         // When
-        NewEmployeeResult result = newEmployeeHandler.handleRequest(request, null);
+        NewEmployeeResult result = JsonUtil.fromJson(newEmployeeHandler.handleRequest(request, null), NewEmployeeResult.class);
 
         // Then
         assertFalse(result.isNewEmployeeCreated());

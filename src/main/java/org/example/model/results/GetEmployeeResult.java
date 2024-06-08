@@ -4,7 +4,7 @@ import org.example.model.PermissionLevel;
 
 import java.time.LocalDate;
 
-public class GetEmployeeResult {
+public class GetEmployeeResult implements Result {
     private final boolean employeeRetrieved;
     private final String employeeId;
     private final String firstName;
@@ -12,16 +12,16 @@ public class GetEmployeeResult {
     private final String middleName;
     private final String email;
     private final String department;
-    private final String hireDate;
+    private final LocalDate hireDate;
     private final boolean currentlyEmployed;
-    private final String terminatedDate;
+    private final LocalDate terminatedDate;
     private final String phone;
     private final String address;
     private final String city;
     private final String state;
     private final String zipCode;
     private final String payRate;
-    private final String permissionAccess;
+    private final PermissionLevel permissionAccess;
     private final String error;
 
     private GetEmployeeResult(Builder builder) {
@@ -32,16 +32,16 @@ public class GetEmployeeResult {
         this.middleName = builder.middleName;
         this.email = builder.email;
         this.department = builder.department;
-        this.hireDate = builder.hireDate != null ? builder.hireDate.toString() : null;
+        this.hireDate = builder.hireDate;
         this.currentlyEmployed = builder.currentlyEmployed;
-        this.terminatedDate = builder.terminatedDate != null ? builder.terminatedDate.toString() : null;
+        this.terminatedDate = builder.terminatedDate;
         this.phone = builder.phone;
         this.address = builder.address;
         this.city = builder.city;
         this.state = builder.state;
         this.zipCode = builder.zipCode;
         this.payRate = builder.payRate;
-        this.permissionAccess = builder.permissionAccess != null ?builder.permissionAccess.toString() : null;
+        this.permissionAccess = builder.permissionAccess;
         this.error = builder.error;
     }
 
@@ -196,7 +196,7 @@ public class GetEmployeeResult {
         return department;
     }
 
-    public String getHireDate() {
+    public LocalDate getHireDate() {
         return hireDate;
     }
 
@@ -204,7 +204,7 @@ public class GetEmployeeResult {
         return currentlyEmployed;
     }
 
-    public String getTerminatedDate() {
+    public LocalDate getTerminatedDate() {
         return terminatedDate;
     }
 
@@ -232,7 +232,7 @@ public class GetEmployeeResult {
         return payRate;
     }
 
-    public String getPermissionAccess() {
+    public PermissionLevel getPermissionAccess() {
         return permissionAccess;
     }
 

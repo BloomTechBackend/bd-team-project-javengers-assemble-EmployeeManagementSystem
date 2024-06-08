@@ -21,4 +21,14 @@ public interface AppComponent {
     void inject(GetAllEmployeesHandler handler);
 
     void inject(UpdateEmployeeHandler handler);
+
+    void inject(NewTimeEntryHandler handler);
+
+    void inject(UpdateTimeEntriesHandler handler);
+
+    void inject(GetLastFiveTimeEntriesHandler handler);
+
+    void inject(GetTimeEntriesHandler handler);
+
+    void inject(UpdateTimeEntryHandler handler);
 }

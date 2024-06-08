@@ -4,25 +4,25 @@ import org.example.model.PermissionLevel;
 
 import java.time.LocalDate;
 
-public class NewEmployeeResult {
-    private boolean newEmployeeCreated;
-    private String employeeId;
-    private String firstName;
-    private String lastName;
-    private String middleName;
-    private String email;
-    private String department;
-    private String hireDate;
-    private String phone;
-    private String address;
-    private String city;
-    private String state;
-    private String zipCode;
-    private String payRate;
-    private String permissionAccess;
-    private String username;
-    private String password;
-    private String error;
+public class NewEmployeeResult implements Result {
+    private final boolean newEmployeeCreated;
+    private final String employeeId;
+    private final String firstName;
+    private final String lastName;
+    private final String middleName;
+    private final String email;
+    private final String department;
+    private final String hireDate;
+    private final String phone;
+    private final String address;
+    private final String city;
+    private final String state;
+    private final String zipCode;
+    private final String payRate;
+    private final String permissionAccess;
+    private final String username;
+    private final String password;
+    private final String error;
 
     public NewEmployeeResult(Builder builder) {
         this.newEmployeeCreated = builder.newEmployeeCreated;
@@ -32,14 +32,14 @@ public class NewEmployeeResult {
         this.middleName = builder.middleName;
         this.email = builder.email;
         this.department = builder.department;
-        this.hireDate = builder.hireDate.toString();
+        this.hireDate = builder.hireDate;
         this.phone = builder.phone;
         this.address = builder.address;
         this.city = builder.city;
         this.state = builder.state;
         this.zipCode = builder.zipCode;
         this.payRate = builder.payRate;
-        this.permissionAccess = builder.permissionAccess.toString();
+        this.permissionAccess = builder.permissionAccess;
         this.username = builder.username;
         this.password = builder.password;
         this.error = builder.error;
@@ -57,14 +57,14 @@ public class NewEmployeeResult {
         private String middleName;
         private String email;
         private String department;
-        private LocalDate hireDate;
+        private String hireDate;
         private String phone;
         private String address;
         private String city;
         private String state;
         private String zipCode;
         private String payRate;
-        private PermissionLevel permissionAccess;
+        private String permissionAccess;
         private String username;
         private String password;
         private String error;
@@ -108,7 +108,7 @@ public class NewEmployeeResult {
             return this;
         }
 
-        public Builder withHireDate(LocalDate hireDate) {
+        public Builder withHireDate(String hireDate) {
             this.hireDate = hireDate;
             return this;
         }
@@ -143,7 +143,7 @@ public class NewEmployeeResult {
             return this;
         }
 
-        public Builder withPermissionAccess(PermissionLevel permissionAccess) {
+        public Builder withPermissionAccess(String permissionAccess) {
             this.permissionAccess = permissionAccess;
             return this;
         }

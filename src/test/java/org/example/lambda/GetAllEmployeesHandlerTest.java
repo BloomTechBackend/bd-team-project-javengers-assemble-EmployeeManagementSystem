@@ -6,7 +6,8 @@ import org.example.model.Employee;
 import org.example.model.PermissionLevel;
 import org.example.model.requests.GetAllEmployeesRequest;
 import org.example.model.results.GetAllEmployeesResult;
-import org.example.utils.ModelConverter;
+import org.example.utils.gson.JsonUtil;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -20,13 +21,14 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
-import static org.mockito.MockitoAnnotations.initMocks;
+import static org.mockito.MockitoAnnotations.openMocks;
 
 public class GetAllEmployeesHandlerTest {
+    private AutoCloseable mocks;
     @Mock
-    EmployeeDao employeeDao;
+    private EmployeeDao employeeDao;
     @InjectMocks
-    GetAllEmployeesHandler employeeHandler;
+    private GetAllEmployeesHandler employeeHandler;
 
     private Employee employee1;
     private Employee employee2;
@@ -34,7 +36,7 @@ public class GetAllEmployeesHandlerTest {
 
     @BeforeEach
     void setUp() {
-        initMocks(this);
+        mocks = openMocks(this);
 
         String employeeId = "Q7RWVU3O";
         String firstName = "John";
@@ -89,6 +91,11 @@ public class GetAllEmployeesHandlerTest {
         employeeList.add(employee2);
     }
 
+    @AfterEach
+    void tearDown() throws Exception {
+        mocks.close();
+    }
+
     @Test
     public void handleRequest_retrievesAllEmployees() {
         when(employeeDao.getAllEmployees()).thenReturn(employeeList);
@@ -96,8 +103,8 @@ public class GetAllEmployeesHandlerTest {
         request.setEmployeeId(employee1.getEmployeeId());
         request.setPermissionLevel(employee1.getPermissionAccess().toString());
 
-        GetAllEmployeesResult result = employeeHandler.handleRequest(request, null);
-        List<Employee> retrievedEmployees = ModelConverter.fromEmployeeModelList(result.getEmployeeList());
+        GetAllEmployeesResult result = JsonUtil.fromJson(employeeHandler.handleRequest(request, null), GetAllEmployeesResult.class);
+        List<Employee> retrievedEmployees = result.getEmployeeList();
 
         verify(employeeDao, never()).saveEmployee(any(Employee.class));
         assertTrue(result.isEmployeesRetrieved());
@@ -113,7 +120,7 @@ public class GetAllEmployeesHandlerTest {
         request.setEmployeeId(employee2.getEmployeeId());
         request.setPermissionLevel(employee2.getPermissionAccess().toString());
 
-        GetAllEmployeesResult result = employeeHandler.handleRequest(request, null);
+        GetAllEmployeesResult result = JsonUtil.fromJson(employeeHandler.handleRequest(request, null), GetAllEmployeesResult.class);
 
         verify(employeeDao, never()).saveEmployee(any(Employee.class));
         assertFalse(result.isEmployeesRetrieved());
@@ -128,7 +135,7 @@ public class GetAllEmployeesHandlerTest {
         request.setEmployeeId(employee1.getEmployeeId());
         request.setPermissionLevel(employee1.getPermissionAccess().toString());
 
-        GetAllEmployeesResult result = employeeHandler.handleRequest(request, null);
+        GetAllEmployeesResult result = JsonUtil.fromJson(employeeHandler.handleRequest(request, null), GetAllEmployeesResult.class);
 
         verify(employeeDao, never()).saveEmployee(any(Employee.class));
         assertFalse(result.isEmployeesRetrieved());

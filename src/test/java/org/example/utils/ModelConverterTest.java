@@ -102,7 +102,7 @@ public class ModelConverterTest {
         employeeModel.setState(state);
         employeeModel.setZipCode(zipCode);
         employeeModel.setPayRate(payRate);
-        employeeModel.setPermissionAccess("Admin");
+        employeeModel.setPermissionAccess("ADMIN");
 
         // EmployeeModel List Setup
         EmployeeModel employeeModel1 = new EmployeeModel();
@@ -119,7 +119,7 @@ public class ModelConverterTest {
                 employeeModel1.setState(state);
                 employeeModel1.setZipCode(zipCode);
                 employeeModel1.setPayRate(payRate);
-                employeeModel1.setPermissionAccess("Standard");
+                employeeModel1.setPermissionAccess("STANDARD");
 
         employeeModelList.add(employeeModel);
         employeeModelList.add(employeeModel1);
@@ -262,7 +262,7 @@ public class ModelConverterTest {
         employeeModel.setFirstName(firstName);
         employeeModel.setLastName(lastName);
         employeeModel.setCurrentlyEmployed(true);
-        employeeModel.setPermissionAccess("Standard");
+        employeeModel.setPermissionAccess("STANDARD");
 
 
         EmployeeModel convertedObject = ModelConverter.fromEmployee(employee);

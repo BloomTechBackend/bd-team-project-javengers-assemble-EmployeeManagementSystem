@@ -1,12 +1,12 @@
 package org.example.model.results;
 
-public class LoginResult {
-    private boolean loginSuccess;
-    private String username;
-    private String employeeId;
-    private boolean accountLocked;
-    private boolean forceChangeAfterLogin;
-    private String error;
+public class LoginResult implements Result {
+    private final boolean loginSuccess;
+    private final String username;
+    private final String employeeId;
+    private final boolean accountLocked;
+    private final boolean forceChangeAfterLogin;
+    private final String error;
 
     public LoginResult(Builder builder) {
         this.loginSuccess = builder.loginSuccess;

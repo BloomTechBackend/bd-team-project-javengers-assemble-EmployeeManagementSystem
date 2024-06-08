@@ -1,12 +1,13 @@
 package org.example.lambda;
 
+import org.example.dynamodb.EmployeeDao;
 import org.example.exceptions.EmployeeNotFoundException;
 import org.example.model.Employee;
-import org.example.dynamodb.EmployeeDao;
 import org.example.model.PermissionLevel;
 import org.example.model.requests.GetEmployeeRequest;
 import org.example.model.results.GetEmployeeResult;
-import org.example.utils.ModelConverter;
+import org.example.utils.gson.JsonUtil;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -17,19 +18,20 @@ import java.time.LocalDate;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
-import static org.mockito.MockitoAnnotations.initMocks;
+import static org.mockito.MockitoAnnotations.openMocks;
 
 public class GetEmployeeHandlerTest {
+    private AutoCloseable mocks;
     @Mock
-    EmployeeDao employeeDao;
+    private EmployeeDao employeeDao;
     @InjectMocks
-    GetEmployeeHandler employeeHandler;
+    private GetEmployeeHandler employeeHandler;
 
     private Employee employee;
 
     @BeforeEach
     void setUp() {
-        initMocks(this);
+        mocks = openMocks(this);
 
         String employeeId = "Q7RWVU3O";
         String firstName = "John";
@@ -64,13 +66,18 @@ public class GetEmployeeHandlerTest {
                 .build();
     }
 
+    @AfterEach
+    void tearDown() throws Exception {
+        mocks.close();
+    }
+
     @Test
     public void handleRequest_withValidEmployeeId_retrievesSingleEmployee() {
         when(employeeDao.getEmployee(anyString())).thenReturn(employee);
         GetEmployeeRequest request = new GetEmployeeRequest();
         request.setEmployeeId(employee.getEmployeeId());
 
-        GetEmployeeResult result = employeeHandler.handleRequest(request, null);
+        GetEmployeeResult result = JsonUtil.fromJson(employeeHandler.handleRequest(request, null), GetEmployeeResult.class);
 
         verify(employeeDao, never()).saveEmployee(any(Employee.class));
         assertTrue(result.isEmployeeRetrieved());
@@ -85,7 +92,7 @@ public class GetEmployeeHandlerTest {
         GetEmployeeRequest request = new GetEmployeeRequest();
         request.setEmployeeId(employee.getEmployeeId());
 
-        GetEmployeeResult result = employeeHandler.handleRequest(request, null);
+        GetEmployeeResult result = JsonUtil.fromJson(employeeHandler.handleRequest(request, null), GetEmployeeResult.class);
 
         verify(employeeDao, never()).saveEmployee(any(Employee.class));
         assertFalse(result.isEmployeeRetrieved());
@@ -98,7 +105,7 @@ public class GetEmployeeHandlerTest {
         GetEmployeeRequest request = new GetEmployeeRequest();
         request.setEmployeeId(employee.getEmployeeId());
 
-        GetEmployeeResult result = employeeHandler.handleRequest(request, null);
+        GetEmployeeResult result = JsonUtil.fromJson(employeeHandler.handleRequest(request, null), GetEmployeeResult.class);
 
         verify(employeeDao, never()).saveEmployee(any(Employee.class));
         assertFalse(result.isEmployeeRetrieved());
@@ -113,16 +120,16 @@ public class GetEmployeeHandlerTest {
                 .withMiddleName(result.getMiddleName())
                 .withEmail(result.getEmail())
                 .withDepartment(result.getDepartment())
-                .withHireDate(ModelConverter.convertStringToLocalDate(result.getHireDate()))
+                .withHireDate(result.getHireDate())
                 .withCurrentlyEmployed(result.isCurrentlyEmployed())
-                .withTerminatedDate(ModelConverter.convertStringToLocalDate(result.getTerminatedDate()))
+                .withTerminatedDate(result.getTerminatedDate())
                 .withPhone(result.getPhone())
                 .withAddress(result.getAddress())
                 .withCity(result.getCity())
                 .withState(result.getState())
                 .withZipCode(result.getZipCode())
                 .withPayRate(result.getPayRate())
-                .withPermissionAccess(PermissionLevel.valueOf(result.getPermissionAccess().toUpperCase()))
+                .withPermissionAccess(result.getPermissionAccess())
                 .build();
     }
 }

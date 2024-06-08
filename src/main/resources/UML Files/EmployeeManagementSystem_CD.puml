@@ -1,0 +1,364 @@
+@startuml
+title
+Employee Management System Class Diagram
+DynamoDB & Mapping Classes
+end title
+
+package dynamodb #DDD {
+    class EmployeeCredentialsDao {
+        - {static} final log : Logger
+        - final dynamoDBMapper : DynamoDBMapper
+
+        + EmployeeCredentialsDao(dynamoDBMapper : DynamoDBMapper)
+        + getEmployeeCredentials(username : String) : EmployeeCredentials
+        + saveEmployeeCredentials(employeeCredentials : EmployeeCredentials) : EmployeeCredentialsModel
+    }
+
+    class EmployeeDao {
+        - {static} final log : Logger
+        - final dynamoDBMapper : DynamoDBMapper
+
+        + EmployeeDao(dynamoDBMapper : DynamoDBMapper)
+        + getEmployee(employeeId : String) : Employee
+        + saveEmployee(employee : Employee) : EmployeeModel
+        + getAllEmployees() : List<Employee>
+    }
+
+    class TimeEntryDao {
+        - {static} final log : Logger
+        - final dynamoDBMapper : DynamoDBMapper
+
+        + TimeEntryDao(dynamoDBMapper : DynamoDBMapper)
+        + getTimeEntry(employeeId : String, entryId : String) : TimeEntry
+        + getLastFiveTimeEntries(employeeId : String) : List<TimeEntry>
+        + getTimeEntries(employeeId : String) : List<TimeEntry>
+        + saveTimeEntry(timeEntry : TimeEntry) : TimeEntryModel
+        + saveTimeEntries(timeEntries : List<TimeEntry>) : List<TimeEntryModel>
+    }
+
+    package model {
+        class EmployeeCredentialsModel {
+            - employeeId : String
+            - username : String
+            - salt : String
+            - password : String
+            - lastUpdated : String
+            - accountLocked : boolean
+            - forceChangeAfterLogin : boolean
+            - failedAttempts : int
+            ---
+            Getter & Setter Methods
+        }
+
+        class EmployeeModel {
+            - employeeId : String
+            - firstName : String
+            - lastName : String
+            - middleName : String
+            - email : String
+            - department : String
+            - hireDate : String
+            - currentlyEmployed : boolean
+            - terminatedDate : String
+            - phone : String
+            - address : String
+            - city : String
+            - state : String
+            - zipCode : String
+            - payRate : String
+            - permissionAccess : String
+
+            ---
+            Getter & Setter Methods
+        }
+
+        class TimeEntryModel {
+            - employeeId : String
+            - entryId : String
+            - timeIn : String
+            - timeOut : String
+            - duration : double
+
+            ---
+            Getter & Setter Methods
+        }
+
+    }
+}
+
+package model #DDD {
+
+    class Employee {
+        - {static} final NULL_DATE : LocalDate
+        - final employeeId : String
+        - firstName : String
+        - lastName : String
+        - middleName : String
+        - email : String
+        - department : String
+        - hireDate : LocalDate
+        - currentlyEmployed : boolean
+        - terminatedDate : LocalDate
+        - phone : String
+        - address : String
+        - city : String
+        - state : String
+        - zipCode : String
+        - payRate : String
+        - permissionAccess : PermissionLevel
+
+        - Employee(employeeBuilder : EmployeeBuilder)
+
+        + {static} builder() : EmployeeBuilder
+    }
+
+    class EmployeeCredentials {
+        - final employeeId : String
+        - username : String
+        - salt : String
+        - password : String
+        - lastUpdated : LocalDateTime
+        - accountLocked : boolean
+        - forceChangeAfterLogin : boolean
+        - failedAttempts : int
+
+        + EmployeeCredentials(employeeId : String, username : String, password : String)
+        + EmployeeCredentials(employeeId String, username String, salt : String, password : String,
+                                       lastUpdated : LocalDateTime, accountLocked : boolean,
+                                       forceChangeAfterLogin : boolean, failedAttempts : int)
+        + updatePassword(password : String)
+        + verifyCredentials(password : String) : boolean
+        + adminResetPassword(password : String)
+    }
+
+    class TimeEntry {
+        - {static} final NULL_DATE_TIME : LocalDateTime
+        - final employeeId : String
+        - final entryId : String
+        - timeIn : LocalDateTime
+        - timeOut : LocalDateTime
+        - duration : double
+
+        - TimeEntry(timeEntryBuilder : TimeEntryBuilder)
+        + {static} builder() : TimeEntryBuilder
+        + calculateDuration() : double
+        + void recordTimeOut()
+        - {static} getCurrentTimeStamp() : LocalDateTime
+    }
+}
+
+package utils #DDD {
+    class CredentialsUtility {
+
+        - {static} final Logger log : Logger
+        - {static} final SALT_LENGTH : int
+        - {static} final HASH_LENGTH : int
+
+        + {static} generateSalt() : String
+        + {static} hashPassword(password : String, salt : String) : String
+        + {static} verifyPassword(password : String, salt : String, hash : String) : boolean
+
+
+    }
+
+    class ModelConverter {
+        - {static} final DATE_FORMATTER : DateTimeFormatter
+        - {static} final DATE_TIME_FORMATTER : DateTimeFormatter
+
+        - ModelConverter() {}
+
+        + {static} fromEmployeeModel(employeeModel : EmployeeModel) : Employee
+        + {static} fromEmployeeModelList(employeeModelList : List<EmployeeModel>) : List<Employee>
+        + {static} fromEmployee(employee : Employee) : EmployeeModel
+        + {static} fromEmployeeList(employeeList : List<Employee>) : List<EmployeeModel>
+        + {static} fromTimeEntryModel(timeEntryModel : TimeEntryModel) : TimeEntry
+        + {static} fromTimeEntryModelList(timeEntryModelList : List<TimeEntryModel>) : List<TimeEntry>
+        + {static} fromTimeEntry(timeEntry : TimeEntry) : TimeEntryModel
+        + {static} fromTimeEntryList(timeEntryList : List<TimeEntry>) : List<TimeEntryModel>
+        + {static} fromEmployeeCredentialsModel(employeeCredentialsModel : EmployeeCredentialsModel) : EmployeeCredentials
+        + {static} fromEmployeeCredentials(employeeCredentials : EmployeeCredentials) : EmployeeCredentialsModel
+        + {static} convertStringToLocalDate(localDateString : String) : LocalDate
+        + {static} convertFromLocalDateToString(date : LocalDate) : String
+        + {static} convertStringToLocalDateTime(localDateTimeString : String) : LocalDateTime
+    }
+}
+
+EmployeeDao --> EmployeeModel
+EmployeeDao --> ModelConverter
+EmployeeCredentialsDao --> EmployeeCredentialsModel
+EmployeeCredentialsDao --> ModelConverter
+TimeEntryDao --> TimeEntryModel
+TimeEntryDao --> ModelConverter
+
+EmployeeDao --> Employee
+EmployeeCredentialsDao --> EmployeeCredentials
+EmployeeCredentials --> CredentialsUtility
+TimeEntryDao --> TimeEntry
+
+newpage
+title
+Employee Management System Class Diagram
+Employee Credentials Handler Classes
+end title
+package lambda #DDD {
+    class AdminResetPasswordHandler implements RequestHandler {
+        - {static} final log : Logger
+
+        credentialsDao : EmployeeCredentialsDao
+
+        + AdminResetPasswordHandler()
+        + handleRequest(request : AdminResetPasswordRequest, context : Context) : String
+    }
+
+    class LoginHandler implements RequestHandler {
+        - {static} final log : Logger
+
+        credentialsDao : EmployeeCredentialsDao
+
+        + LoginHandler()
+        + handleRequest(request : LoginRequest, context : Context) : String
+    }
+
+    class UpdatePasswordHandler implements RequestHandler {
+        - {static} final log : Logger
+
+        credentialsDao : EmployeeCredentialsDao
+
+        + UpdatePasswordHandler()
+        + handleRequest(request : UpdatePasswordRequest, context : Context) : String
+    }
+
+}
+
+
+AdminResetPasswordHandler --> EmployeeCredentialsDao
+AdminResetPasswordHandler --> EmployeeCredentials
+LoginHandler --> EmployeeCredentialsDao
+LoginHandler --> EmployeeCredentials
+UpdatePasswordHandler --> EmployeeCredentialsDao
+UpdatePasswordHandler --> EmployeeCredentials
+
+newpage
+title
+Employee Management System Class Diagram
+Employee Handler Classes
+end title
+package lambda #DDD {
+
+    class GetAllEmployeesHandler implements RequestHandler {
+        - {static} final log : Logger
+
+        employeeDao : EmployeeDao
+
+        + GetAllEmployeesHandler()
+        + handleRequest(request : GetAllEmployeesRequest, context : Context) : String
+    }
+
+    class GetEmployeeHandler implements RequestHandler {
+        - {static} final log : Logger
+
+        employeeDao : EmployeeDao
+
+        + GetEmployeeHandler()
+        + handleRequest(request : GetEmployeeRequest, context : Context) : String
+    }
+
+    class NewEmployeeHandler implements RequestHandler {
+        - {static} final log : Logger
+
+        employeeDao : EmployeeDao
+        employeeCredentialsDao : EmployeeCredentialsDao
+
+        + NewEmployeeHandler()
+        + handleRequest(request : NewEmployeeRequest, context : Context) : String
+    }
+
+    class UpdateEmployeeHandler implements RequestHandler {
+        - {static} final log : Logger
+
+        employeeDao : EmployeeDao
+
+        + UpdateEmployeeHandler()
+        + handleRequest(request : UpdateEmployeeRequest, context : Context) : String
+    }
+
+}
+
+
+GetAllEmployeesHandler --> EmployeeDao
+GetAllEmployeesHandler --> Employee
+GetEmployeeHandler --> EmployeeDao
+GetEmployeeHandler --> Employee
+NewEmployeeHandler --> EmployeeDao
+NewEmployeeHandler --> EmployeeCredentialsDao
+UpdateEmployeeHandler --> EmployeeDao
+UpdateEmployeeHandler --> Employee
+
+newpage
+title
+Employee Management System Class Diagram
+Time Entry Handler Classes
+end title
+package lambda #DDD {
+
+    class NewTimeEntryHandler implements RequestHandler {
+        - {static} final log : Logger
+
+        timeEntryDao : TimeEntryDao
+
+        + NewTimeEntryHandler()
+        + handleRequest(request : NewTimeEntryRequest, context : Context) : String
+    }
+
+    class UpdateTimeEntryHandler implements RequestHandler {
+        - {static} final log : Logger
+
+        timeEntryDao : TimeEntryDao
+
+        + UpdateTimeEntryHandler()
+        + handleRequest(request : UpdateTimeEntryRequest, context : Context) : String
+    }
+
+    class UpdateTimeEntriesHandler implements RequestHandler {
+        - {static} final log : Logger
+
+        timeEntryDao : TimeEntryDao
+
+        + UpdateTimeEntriesHandler()
+        + handleRequest(request : UpdateTimeEntriesRequest, context : Context) : String
+    }
+
+    class GetLastFiveTimeEntriesHandler implements RequestHandler {
+        - {static} final log : Logger
+
+        timeEntryDao : TimeEntryDao
+
+        + GetLastFiveTimeEntriesHandler()
+        + handleRequest(request : GetLastFiveTimeEntriesRequest, context : Context) : String
+    }
+
+    class GetTimeEntriesHandler implements RequestHandler {
+        - {static} final log : Logger
+
+        timeEntryDao : TimeEntryDao
+
+        + GetTimeEntriesHandler()
+        + handleRequest(request : GetTimeEntriesRequest, context : Context) : String
+    }
+}
+
+
+NewTimeEntryHandler --> TimeEntryDao
+NewTimeEntryHandler --> TimeEntry
+UpdateTimeEntryHandler --> TimeEntryDao
+UpdateTimeEntryHandler --> TimeEntry
+UpdateTimeEntriesHandler --> TimeEntryDao
+UpdateTimeEntriesHandler --> TimeEntry
+GetTimeEntriesHandler --> TimeEntryDao
+GetTimeEntriesHandler --> TimeEntry
+GetLastFiveTimeEntriesHandler --> TimeEntryDao
+GetLastFiveTimeEntriesHandler --> TimeEntry
+
+}
+
+@enduml

@@ -7,6 +7,7 @@ import org.example.dynamodb.model.EmployeeModel;
 import org.example.exceptions.EmployeeNotFoundException;
 import org.example.model.Employee;
 import org.example.model.PermissionLevel;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -20,9 +21,10 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
-import static org.mockito.MockitoAnnotations.initMocks;
+import static org.mockito.MockitoAnnotations.openMocks;
 
 public class EmployeeDaoTest {
+    AutoCloseable mocks;
     @Mock
     DynamoDBMapper dynamoDBMapper;
 
@@ -49,7 +51,7 @@ public class EmployeeDaoTest {
 
     @BeforeEach
     void setUp() {
-        initMocks(this);
+        mocks = openMocks(this);
 
         // Employee Setup
         employee = Employee.builder()
@@ -106,6 +108,11 @@ public class EmployeeDaoTest {
 
         employeeModelList.add(employeeModel);
         employeeModelList.add(employeeModel1);
+    }
+
+    @AfterEach
+    public void tearDown() throws Exception {
+        mocks.close();
     }
 
     @Test

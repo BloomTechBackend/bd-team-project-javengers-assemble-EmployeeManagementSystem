@@ -9,7 +9,7 @@ import java.time.LocalDate;
  * This class encapsulates the details of the update operation, including whether the update was successful,
  * the employee's details, and any associated error message in case of failure.
  */
-public class UpdateEmployeeResult {
+public class UpdateEmployeeResult implements Result {
     private final boolean employeeUpdated;
     private final String employeeId;
     private final String firstName;
@@ -37,16 +37,16 @@ public class UpdateEmployeeResult {
         this.middleName = builder.middleName;
         this.email = builder.email;
         this.department = builder.department;
-        this.hireDate = builder.hireDate != null ? builder.hireDate.toString() : null;
+        this.hireDate = builder.hireDate;
         this.currentlyEmployed = builder.currentlyEmployed;
-        this.terminatedDate = builder.terminatedDate != null ? builder.terminatedDate.toString() : null;
+        this.terminatedDate = builder.terminatedDate;
         this.phone = builder.phone;
         this.address = builder.address;
         this.city = builder.city;
         this.state = builder.state;
         this.zipCode = builder.zipCode;
         this.payRate = builder.payRate;
-        this.permissionAccess = builder.permissionAccess != null ?builder.permissionAccess.toString() : null;
+        this.permissionAccess = builder.permissionAccess;
         this.error = builder.error;
     }
 
@@ -62,16 +62,16 @@ public class UpdateEmployeeResult {
         private String middleName;
         private String email;
         private String department;
-        private LocalDate hireDate;
+        private String hireDate;
         private boolean currentlyEmployed;
-        private LocalDate terminatedDate;
+        private String terminatedDate;
         private String phone;
         private String address;
         private String city;
         private String state;
         private String zipCode;
         private String payRate;
-        private PermissionLevel permissionAccess;
+        private String permissionAccess;
         private String error;
 
         public Builder() {
@@ -112,7 +112,7 @@ public class UpdateEmployeeResult {
             return this;
         }
 
-        public Builder withHireDate(LocalDate hireDate) {
+        public Builder withHireDate(String hireDate) {
             this.hireDate = hireDate;
             return this;
         }
@@ -122,7 +122,7 @@ public class UpdateEmployeeResult {
             return this;
         }
 
-        public Builder withTerminatedDate(LocalDate terminatedDate) {
+        public Builder withTerminatedDate(String terminatedDate) {
             this.terminatedDate = terminatedDate;
             return this;
         }
@@ -157,7 +157,7 @@ public class UpdateEmployeeResult {
             return this;
         }
 
-        public Builder withPermissionAccess(PermissionLevel permissionAccess) {
+        public Builder withPermissionAccess(String permissionAccess) {
             this.permissionAccess = permissionAccess;
             return this;
         }
