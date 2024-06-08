@@ -13,7 +13,7 @@ public class GsonConfig {
                 .registerTypeAdapter(LocalDate.class, new CustomSerializers.LocalDateDeserializer())
                 .registerTypeAdapter(LocalDateTime.class, new CustomSerializers.LocalDateTimeSerializer())
                 .registerTypeAdapter(LocalDateTime.class, new CustomSerializers.LocalDateTimeDeserializer())
-                .setPrettyPrinting()
+                //.setPrettyPrinting()
                 .create();
     }
 }
