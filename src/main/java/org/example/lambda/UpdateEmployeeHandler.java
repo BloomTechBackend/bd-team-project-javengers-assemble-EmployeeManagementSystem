@@ -7,6 +7,7 @@ import org.apache.logging.log4j.Logger;
 import org.example.dependency.DaggerAppComponent;
 import org.example.dynamodb.EmployeeDao;
 import org.example.dynamodb.model.EmployeeModel;
+import org.example.exceptions.EmployeeNotFoundException;
 import org.example.model.Employee;
 import org.example.model.requests.UpdateEmployeeRequest;
 import org.example.model.results.UpdateEmployeeResult;
@@ -41,6 +42,9 @@ public class UpdateEmployeeHandler implements RequestHandler<UpdateEmployeeReque
     @Override
     public String handleRequest(UpdateEmployeeRequest request, Context context) {
         try {
+            // check if employee ID exists in the database
+            employeeDao.getEmployee(request.getEmployeeId());
+
             Employee updatedEmployee = Employee.builder()
                     .withEmployeeId(request.getEmployeeId())
                     .withFirstName(request.getFirstName())
@@ -86,6 +90,33 @@ public class UpdateEmployeeHandler implements RequestHandler<UpdateEmployeeReque
                             .build()
             );
 
+        } catch (EmployeeNotFoundException e) {
+            log.error(String.format("Employee Not Found. Entry for Employee ID \"%s\" should be in the database.",
+                    request.getEmployeeId()), e);
+
+            return JsonUtil.createJsonResponse(
+                    UpdateEmployeeResult.builder()
+                            .withEmployeeUpdated(false)
+                            .withEmployeeId(request.getEmployeeId())
+                            .withFirstName(request.getFirstName())
+                            .withLastName(request.getLastName())
+                            .withMiddleName(request.getMiddleName())
+                            .withEmail(request.getEmail())
+                            .withDepartment(request.getDepartment())
+                            .withHireDate(request.getHireDate() != null ? request.getHireDate().toString() : null)
+                            .withCurrentlyEmployed(request.isCurrentlyEmployed())
+                            .withTerminatedDate(request.getTerminatedDate() != null ? request.getTerminatedDate().toString() : null)
+                            .withPhone(request.getPhone())
+                            .withAddress(request.getAddress())
+                            .withCity(request.getCity())
+                            .withState(request.getState())
+                            .withZipCode(request.getZipCode())
+                            .withPayRate(request.getPayRate())
+                            .withPermissionAccess(request.getPermissionAccess() != null ? request.getPermissionAccess().name() : null)
+                            .withError(e.getMessage())
+                            .build()
+            );
+
         } catch (Exception e) {
             log.error("An error occurred while updating the Employee. ", e);
 
@@ -93,6 +124,21 @@ public class UpdateEmployeeHandler implements RequestHandler<UpdateEmployeeReque
                     UpdateEmployeeResult.builder()
                             .withEmployeeUpdated(false)
                             .withEmployeeId(request.getEmployeeId())
+                            .withFirstName(request.getFirstName())
+                            .withLastName(request.getLastName())
+                            .withMiddleName(request.getMiddleName())
+                            .withEmail(request.getEmail())
+                            .withDepartment(request.getDepartment())
+                            .withHireDate(request.getHireDate() != null ? request.getHireDate().toString() : null)
+                            .withCurrentlyEmployed(request.isCurrentlyEmployed())
+                            .withTerminatedDate(request.getTerminatedDate() != null ? request.getTerminatedDate().toString() : null)
+                            .withPhone(request.getPhone())
+                            .withAddress(request.getAddress())
+                            .withCity(request.getCity())
+                            .withState(request.getState())
+                            .withZipCode(request.getZipCode())
+                            .withPayRate(request.getPayRate())
+                            .withPermissionAccess(request.getPermissionAccess() != null ? request.getPermissionAccess().name() : null)
                             .withError(e.getMessage())
                             .build()
             );

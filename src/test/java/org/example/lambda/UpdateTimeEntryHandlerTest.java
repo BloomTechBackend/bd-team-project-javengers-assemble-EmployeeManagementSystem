@@ -47,8 +47,8 @@ public class UpdateTimeEntryHandlerTest {
         updateTimeEntryRequest = new UpdateTimeEntryRequest();
         updateTimeEntryRequest.setEmployeeId(employeeId);
         updateTimeEntryRequest.setEntryId(entryId);
-        updateTimeEntryRequest.setTimeIn(timeIn);
-        updateTimeEntryRequest.setTimeOut(LocalDateTime.of(2024,06,05,4,30,15));
+        updateTimeEntryRequest.setTimeIn(timeIn.toString());
+        updateTimeEntryRequest.setTimeOut(LocalDateTime.of(2024,06,05,4,30,15).toString());
     }
 
     @AfterEach
