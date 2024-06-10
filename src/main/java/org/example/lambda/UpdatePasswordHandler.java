@@ -8,6 +8,7 @@ import org.example.dependency.DaggerAppComponent;
 import org.example.dynamodb.EmployeeCredentialsDao;
 import org.example.dynamodb.model.EmployeeCredentialsModel;
 import org.example.exceptions.InvalidInputFormatException;
+import org.example.exceptions.UsernameNotFoundException;
 import org.example.model.EmployeeCredentials;
 import org.example.model.requests.UpdateCredentialsRequest;
 import org.example.model.results.UpdateCredentialsResult;
@@ -62,6 +63,17 @@ public class UpdatePasswordHandler implements RequestHandler<UpdateCredentialsRe
                             .withAccountLocked(savedCredentials.isAccountLocked())
                             .withForceChangeAfterLogin(savedCredentials.isForceChangeAfterLogin())
                             .withFailedAttempts(savedCredentials.getFailedAttempts())
+                            .build()
+            );
+
+        } catch (UsernameNotFoundException e) {
+            log.warn("Username Not Found. ", e);
+            return JsonUtil.createJsonResponse(
+                    UpdateCredentialsResult.builder()
+                            .withCredentialsUpdated(false)
+                            .withEmployeeId(request.getEmployeeId())
+                            .withUsername(request.getUsername())
+                            .withError(e.getMessage())
                             .build()
             );
 

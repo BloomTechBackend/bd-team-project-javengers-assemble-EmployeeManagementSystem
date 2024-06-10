@@ -1,5 +1,7 @@
 package org.example.model.requests;
 
+import org.example.utils.ModelConverter;
+
 import java.time.LocalDateTime;
 
 public class UpdateTimeEntryRequest {
@@ -30,16 +32,16 @@ public class UpdateTimeEntryRequest {
         return timeIn;
     }
 
-    public void setTimeIn(LocalDateTime timeIn) {
-        this.timeIn = timeIn;
+    public void setTimeIn(String timeIn) {
+        this.timeIn = ModelConverter.convertStringToLocalDateTime(timeIn);
     }
 
     public LocalDateTime getTimeOut() {
         return timeOut;
     }
 
-    public void setTimeOut(LocalDateTime timeOut) {
-        this.timeOut = timeOut;
+    public void setTimeOut(String timeOut) {
+        this.timeOut = ModelConverter.convertStringToLocalDateTime(timeOut);
     }
 
     public double getDuration() {

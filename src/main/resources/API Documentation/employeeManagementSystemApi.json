@@ -1,0 +1,1385 @@
+{
+  "openapi": "3.0.2",
+  "info": {
+    "title": "Javengers Assemble Employee Management System API",
+    "version": "1.0.0"
+  },
+  "paths": {
+    "/employees": {
+      "get": {
+        "description": "This is used to retrieve all employees in the database. This is an admin only function.",
+        "parameters": [
+          {
+            "name": "employeeId",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "ZBYE4DPH"
+            }
+          },
+          {
+            "name": "permissionLevel",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "ADMIN"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "items": {
+                    "$ref": "#/components/schemas/GetAllEmployeesResponse"
+                  },
+                  "example": {
+                    "employeesRetrieved": true,
+                    "employeeList": [
+                      {
+                        "employeeId": "3CJ624GM",
+                        "firstName": "Peter",
+                        "lastName": "Parker",
+                        "email": "peter.parker@example.com",
+                        "department": "Engineering",
+                        "hireDate": "2024-01-15",
+                        "currentlyEmployed": true,
+                        "phone": "+1-123-456-7890",
+                        "address": "123 Address Dr",
+                        "city": "Some City",
+                        "state": "CO",
+                        "zipCode": "12345-1234",
+                        "payRate": "25/hr",
+                        "permissionAccess": "STANDARD"
+                      },
+                      {
+                        "employeeId": "X4ZYIPSU",
+                        "firstName": "Tony",
+                        "lastName": "Stark",
+                        "email": "tony.stark@example.com",
+                        "department": "Engineering",
+                        "hireDate": "2010-02-20",
+                        "currentlyEmployed": true,
+                        "phone": "+1-123-456-7890",
+                        "address": "123 Address Dr",
+                        "city": "Some City",
+                        "state": "CO",
+                        "zipCode": "12345-1234",
+                        "payRate": "10000/bw",
+                        "permissionAccess": "ADMIN"
+                      },
+                      {
+                        "employeeId": "ABTH4DPH",
+                        "firstName": "John",
+                        "lastName": "Doe",
+                        "middleName": "Moe",
+                        "email": "john.doe@example.com",
+                        "department": "Engineering",
+                        "hireDate": "2024-06-05",
+                        "currentlyEmployed": true,
+                        "phone": "+1-123-456-7890",
+                        "address": "123 Address Dr",
+                        "city": "Some City",
+                        "state": "CO",
+                        "zipCode": "12345-1234",
+                        "payRate": "6500/bw",
+                        "permissionAccess": "ADMIN"
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Unauthorized Access Exception",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "items": {
+                    "$ref": "#/components/schemas/Error"
+                  },
+                  "example": {
+                    "employeesRetrieved": false,
+                    "error": "User does not have sufficient authorization to access this resource."
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "items": {
+                    "$ref": "#/components/schemas/Error"
+                  }
+                },
+                "example": {
+                  "employeesRetrieved": false,
+                  "error": "An unexpected error occurred while retrieving all employees"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "description": "This is used to create a new employee and store the data in the database. This is an admin only function.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "firstName": {
+                    "type": "string",
+                    "example": "John"
+                  },
+                  "lastName": {
+                    "type": "string",
+                    "example": "Doe"
+                  },
+                  "middleName": {
+                    "type": "string",
+                    "example": "Moe"
+                  },
+                  "email": {
+                    "type": "string",
+                    "example": "jon.doe@example.com"
+                  },
+                  "department": {
+                    "type": "string",
+                    "example": "DevOps"
+                  },
+                  "hireDate": {
+                    "type": "string",
+                    "example": "2024-06-01"
+                  },
+                  "phone": {
+                    "type": "string",
+                    "example": "+1-123-456-7890"
+                  },
+                  "address": {
+                    "type": "string",
+                    "example": "123 Example Ave"
+                  },
+                  "city": {
+                    "type": "string",
+                    "example": "Some City"
+                  },
+                  "state": {
+                    "type": "string",
+                    "example": "CO"
+                  },
+                  "zipCode": {
+                    "type": "string",
+                    "example": "12345-1234"
+                  },
+                  "payRate": {
+                    "type": "string",
+                    "description": "Strict formatting. See examples for accepted types.",
+                    "example": "19.25/hr"
+                  },
+                  "permissionAccess": {
+                    "type": "string",
+                    "example": "STANDARD"
+                  },
+                  "username": {
+                    "type": "string"
+                  },
+                  "password": {
+                    "type": "string",
+                    "description": "When creating a new user, the password provided functions as a temporary password. As such, the password is returned in the result so it can be noted for the employee. The employee will be prompted to create a new password after logging in for the first time."
+                  }
+                },
+                "required": [
+                  "firstName",
+                  "lastName",
+                  "username",
+                  "password"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "items": {
+                    "$ref": "#/components/schemas/Employee"
+                  },
+                  "example": {
+                    "newEmployeeCreated": true,
+                    "employeeId": "3CJ624GM",
+                    "firstName": "Peter",
+                    "lastName": "Parker",
+                    "middleName": "Benjamin",
+                    "email": "peter.parker@example.com",
+                    "department": "Engineering",
+                    "hireDate": "2024-01-15",
+                    "phone": "+1-123-456-7890",
+                    "address": "123 Address Dr",
+                    "city": "Some City",
+                    "state": "CO",
+                    "zipCode": "12345-1234",
+                    "payRate": "25/hr",
+                    "permissionAccess": "STANDARD",
+                    "username": "pparker",
+                    "password": "SomeTempP@ss!"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Username already exists",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "items": {
+                    "$ref": "#/components/schemas/Error"
+                  },
+                  "example": {
+                    "newEmployeeCreated": false,
+                    "firstName": "Peter",
+                    "lastName": "Parker",
+                    "middleName": "Benjamin",
+                    "email": "peter.parker@example.com",
+                    "department": "Engineering",
+                    "hireDate": "2024-01-15",
+                    "phone": "+1-123-456-7890",
+                    "address": "123 Address Dr",
+                    "city": "Some City",
+                    "state": "CO",
+                    "zipCode": "12345-1234",
+                    "payRate": "25/hr",
+                    "permissionAccess": "STANDARD",
+                    "username": "pparker",
+                    "password": "SomeTempP@ss!",
+                    "error": "Username already exists."
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "items": {
+                    "$ref": "#/components/schemas/Error"
+                  }
+                },
+                "example": {
+                  "newEmployeeCreated": false,
+                  "firstName": "Peter",
+                  "lastName": "Parker",
+                  "middleName": "Benjamin",
+                  "email": "peter.parker@example.com",
+                  "department": "Engineering",
+                  "hireDate": "2024-01-15",
+                  "phone": "+1-123-456-7890",
+                  "address": "123 Address Dr",
+                  "city": "Some City",
+                  "state": "CO",
+                  "zipCode": "12345-1234",
+                  "payRate": "25/hr",
+                  "permissionAccess": "STANDARD",
+                  "username": "pparker",
+                  "password": "SomeTempP@ss!",
+                  "error": "An unexpected error occurred while creating the employee."
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/employees/{employeeId}/": {
+      "get": {
+        "description": "Retrieves a single employee for the provided employee ID.",
+        "parameters": [
+          {
+            "name": "employeeId",
+            "in": "path",
+            "description": "The ID of the employee to retrieve",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "items": {
+                    "$ref": "#/components/schemas/Employee"
+                  }
+                },
+                "example": {
+                  "employeeRetrieved": true,
+                  "employeeId": "ABTH4DPH",
+                  "firstName": "John",
+                  "lastName": "Doe",
+                  "middleName": "Moe",
+                  "email": "john.doe@example.com",
+                  "department": "Engineering",
+                  "hireDate": "2024-06-05",
+                  "currentlyEmployed": true,
+                  "phone": "+1-123-456-7890",
+                  "address": "123 Address Dr",
+                  "city": "Some City",
+                  "state": "CO",
+                  "zipCode": "12345-1234",
+                  "payRate": "6500/bw",
+                  "permissionAccess": "ADMIN"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Employee Not Found Exception",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "items": {
+                    "$ref": "#/components/schemas/Error"
+                  },
+                  "example": {
+                    "employeeRetrieved": false,
+                    "error": "Employee not found. Employee ID \"{employeeId}\" not in employee database, but the credentials for this ID exist in the employee_credentials table."
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "items": {
+                    "$ref": "#/components/schemas/Error"
+                  }
+                },
+                "example": {
+                  "employeesRetrieved": false,
+                  "error": "An unexpected error occurred while retrieving employee ID: {employeeId}"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "description": "This is used to update an employee's data in the database.",
+        "parameters": [
+          {
+            "name": "employeeId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string",
+              "example": "ABTH4DPH"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "firstName": {
+                    "type": "string",
+                    "example": "John"
+                  },
+                  "lastName": {
+                    "type": "string",
+                    "example": "Doe"
+                  },
+                  "middleName": {
+                    "type": "string",
+                    "example": "Moe"
+                  },
+                  "email": {
+                    "type": "string",
+                    "example": "jon.doe@example.com"
+                  },
+                  "department": {
+                    "type": "string",
+                    "example": "DevOps"
+                  },
+                  "hireDate": {
+                    "type": "string",
+                    "example": "2024-06-01"
+                  },
+                  "currentlyEmployed": {
+                    "type": "boolean",
+                    "example": false
+                  },
+                  "terminatedDate": {
+                    "type": "string",
+                    "example": "2024-06-01"
+                  },
+                  "phone": {
+                    "type": "string",
+                    "example": "+1-123-456-7890"
+                  },
+                  "address": {
+                    "type": "string",
+                    "example": "123 Example Ave"
+                  },
+                  "city": {
+                    "type": "string",
+                    "example": "Some City"
+                  },
+                  "state": {
+                    "type": "string",
+                    "example": "CO"
+                  },
+                  "zipCode": {
+                    "type": "string",
+                    "example": "12345-1234"
+                  },
+                  "payRate": {
+                    "type": "string",
+                    "description": "Strict formatting. See examples for accepted types.",
+                    "example": "6200.25/bw"
+                  },
+                  "permissionAccess": {
+                    "type": "string",
+                    "example": "STANDARD"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "items": {
+                    "$ref": "#/components/schemas/Employee"
+                  },
+                  "example": {
+                    "updatedEmployee": true,
+                    "employeeId": "3CJ624GM",
+                    "firstName": "Peter",
+                    "lastName": "Parker",
+                    "middleName": "Benjamin",
+                    "email": "peter.parker@example.com",
+                    "department": "Engineering",
+                    "hireDate": "2024-01-15",
+                    "currentlyEmployed": false,
+                    "terminatedDate": "2024-05-29",
+                    "phone": "+1-123-456-7890",
+                    "address": "123 Address Dr",
+                    "city": "Some City",
+                    "state": "CO",
+                    "zipCode": "12345-1234",
+                    "payRate": "25/hr",
+                    "permissionAccess": "STANDARD"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Employee Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "items": {
+                    "$ref": "#/components/schemas/Error"
+                  },
+                  "example": {
+                    "updatedEmployee": false,
+                    "employeeId": "3CJ624GM",
+                    "firstName": "Peter",
+                    "lastName": "Parker",
+                    "middleName": "Benjamin",
+                    "email": "peter.parker@example.com",
+                    "department": "Engineering",
+                    "hireDate": "2024-01-15",
+                    "currentlyEmployed": false,
+                    "terminatedDate": "2024-05-29",
+                    "phone": "+1-123-456-7890",
+                    "address": "123 Address Dr",
+                    "city": "Some City",
+                    "state": "CO",
+                    "zipCode": "12345-1234",
+                    "payRate": "25/hr",
+                    "permissionAccess": "STANDARD",
+                    "error": "Employee Not Found. ..."
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "items": {
+                    "$ref": "#/components/schemas/Error"
+                  },
+                  "example": {
+                    "updatedEmployee": false,
+                    "employeeId": "3CJ624GM",
+                    "firstName": "Peter",
+                    "lastName": "Parker",
+                    "middleName": "Benjamin",
+                    "email": "peter.parker@example.com",
+                    "department": "Engineering",
+                    "hireDate": "2024-01-15",
+                    "currentlyEmployed": false,
+                    "terminatedDate": "2024-05-29",
+                    "phone": "+1-123-456-7890",
+                    "address": "123 Address Dr",
+                    "city": "Some City",
+                    "state": "CO",
+                    "zipCode": "12345-1234",
+                    "payRate": "25/hr",
+                    "permissionAccess": "STANDARD",
+                    "error": "An unexpected error occurred while retrieving employee ID: {employeeId}."
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/employees/login/": {
+      "post": {
+        "description": "Retrieves and validates employee login credentials.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "username": {
+                    "type": "string",
+                    "description": "The username of the employee.",
+                    "example": "jdoe"
+                  },
+                  "password": {
+                    "type": "string",
+                    "description": "The plaintext password of the employee.",
+                    "example": "P@ssw0rd1!"
+                  }
+                },
+                "required": [
+                  "username",
+                  "password"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "items": {
+                    "$ref": "#/components/schemas/EmployeeCredentials"
+                  }
+                },
+                "example": {
+                  "loginSuccess": true,
+                  "username": "jdoe",
+                  "employeeId": "ABTH4DPH",
+                  "forceChangeAfterLogin": false
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Invalid Credentials",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "items": {
+                    "$ref": "#/components/schemas/Error"
+                  },
+                  "example": {
+                    "loginSuccess": false,
+                    "username": "jdoe",
+                    "error": "Invalid Password!"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Employee Not Found Exception",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "items": {
+                    "$ref": "#/components/schemas/Error"
+                  },
+                  "example": {
+                    "loginSuccess": false,
+                    "username": "jdoe",
+                    "error": "Username \"{username}\" not found!"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "items": {
+                    "$ref": "#/components/schemas/Error"
+                  },
+                  "example": {
+                    "loginSuccess": false,
+                    "username": "jdoe",
+                    "error": "An unexpected error occurred while trying to log in."
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/employees/{employeeId}/credentials/update/": {
+      "put": {
+        "description": "Updates the employee's login credentials. This is to update an employee's personal credentials.",
+        "parameters": [
+          {
+            "name": "employeeId",
+            "in": "path",
+            "description": "The employee ID.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "ABTH4DPH"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "username": {
+                    "type": "string",
+                    "description": "The username of the employee.",
+                    "example": "jdoe"
+                  },
+                  "password": {
+                    "type": "string",
+                    "description": "The new plaintext password of the employee.",
+                    "example": "N3wEmpl0ye3P@ssw0rd!"
+                  }
+                },
+                "required": [
+                  "username",
+                  "password"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "items": {
+                    "$ref": "#/components/schemas/EmployeeCredentials"
+                  }
+                },
+                "example": {
+                  "credentialsUpdated": true,
+                  "employeeId": "ABTH4DPH",
+                  "username": "jdoe",
+                  "lastUpdated": "2024-06-07T14:56:31.091184",
+                  "accountLocked": false,
+                  "forceChangeAfterLogin": false,
+                  "failedAttempts": 0
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid password format. ",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "items": {
+                    "$ref": "#/components/schemas/Error"
+                  },
+                  "example": {
+                    "credentialsUpdated": false,
+                    "employeeId": "ABTH4DPH",
+                    "username": "jdoe",
+                    "error": "Password must contain the following: \n  At least one uppercase letter\n  At least one lowercase letter\n  At least one number\n  At least one special character: !{}()-._?[]~;:@#$%^&*+=\n  Be at least 8 characters\n  Password cannot contain any whitespaces or begin with a dash \"-\" or a period \".\""
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Username Not Found Exception",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "items": {
+                    "$ref": "#/components/schemas/Error"
+                  },
+                  "example": {
+                    "credentialsUpdated": false,
+                    "employeeId": "ABTH4DPH",
+                    "username": "jdoe",
+                    "error": "Username \"{username}\" not found!"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "items": {
+                    "$ref": "#/components/schemas/Error"
+                  },
+                  "example": {
+                    "credentialsUpdated": false,
+                    "employeeId": "ABTH4DPH",
+                    "username": "jdoe",
+                    "error": "An unexpected error occurred while trying to log in."
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/employees/admin/manage_employees/update/credentials/": {
+      "put": {
+        "description": "Allows the admin to reset an employee's password and assign a temporary one. Employee will be prompted to change password upon logging in.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "employeeId": {
+                    "type": "string",
+                    "description": "The employee ID.",
+                    "example": "ABTH4DPH"
+                  },
+                  "username": {
+                    "type": "string",
+                    "description": "The username of the employee.",
+                    "example": "jdoe"
+                  },
+                  "password": {
+                    "type": "string",
+                    "description": "The new plaintext password of the employee.",
+                    "example": "T3mpP@ssw0rd"
+                  }
+                },
+                "required": [
+                  "employeeId",
+                  "username",
+                  "password"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "items": {
+                    "$ref": "#/components/schemas/EmployeeCredentials"
+                  }
+                },
+                "example": {
+                  "credentialsUpdated": true,
+                  "employeeId": "ABTH4DPH",
+                  "username": "jdoe",
+                  "lastUpdated": "2024-06-07T14:56:31.091184",
+                  "accountLocked": false,
+                  "forceChangeAfterLogin": true,
+                  "failedAttempts": 0
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Username Not Found Exception",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "items": {
+                    "$ref": "#/components/schemas/Error"
+                  },
+                  "example": {
+                    "credentialsUpdated": false,
+                    "employeeId": "ABTH4DPH",
+                    "username": "jdoe",
+                    "error": "Username \"{username}\" not found!"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "items": {
+                    "$ref": "#/components/schemas/Error"
+                  },
+                  "example": {
+                    "credentialsUpdated": false,
+                    "employeeId": "ABTH4DPH",
+                    "username": "jdoe",
+                    "error": "An unexpected error occurred while trying to log in."
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/employees/time_entries/{employeeId}/last5/": {
+      "get": {
+        "description": "Retrives the last five time entries for an employee.",
+        "parameters": [
+          {
+            "name": "employeeId",
+            "in": "path",
+            "description": "The employee ID for whom the time entries are loaded.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "ABTH4DPH"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "items": {
+                    "$ref": "#/components/schemas/TimeEntryResponse"
+                  },
+                  "example": {
+                    "lastFiveTimeEntriesRetrieved": true,
+                    "timeEntryList": [
+                      {
+                        "employeeId": "ABTH4DPH",
+                        "entryId": "28z7139-649t-4c84-9f5d-5f8d8ba81a4c",
+                        "timeIn": "2024-06-05T04:01:30.050627",
+                        "timeOut": "2024-06-05T12:03:26.986625",
+                        "duration": 8.02
+                      },
+                      {
+                        "employeeId": "ABTH4DPH",
+                        "entryId": "5b896bf5-6924-4e23-8bb2-c6a1f11f5c82",
+                        "timeIn": "2024-06-06T04:01:30.050627",
+                        "timeOut": "2024-06-06T12:03:26.986625",
+                        "duration": 8.02
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Time Entries Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "items": {
+                    "$ref": "#/components/schemas/Error"
+                  },
+                  "example": {
+                    "lastFiveTimeEntriesRetrieved": false,
+                    "error": "Could not find time entries with Employee ID: {employeeId}"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "items": {
+                    "$ref": "#/components/schemas/Error"
+                  },
+                  "example": {
+                    "lastFiveTimeEntriesRetrieved": false,
+                    "error": "An unexpected error occurred while retrieving time entries."
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/employees/time_entries/{employeeId}/all/": {
+      "get": {
+        "description": "Retrives all time entries for an employee.",
+        "parameters": [
+          {
+            "name": "employeeId",
+            "in": "path",
+            "description": "The employee ID for whom the time entries are loaded.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "ABTH4DPH"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "items": {
+                    "$ref": "#/components/schemas/TimeEntryResponse"
+                  },
+                  "example": {
+                    "lastFiveTimeEntriesRetrieved": true,
+                    "timeEntryList": [
+                      {
+                        "employeeId": "ABTH4DPH",
+                        "entryId": "28z7139-649t-4c84-9f5d-5f8d8ba81a4c",
+                        "timeIn": "2024-06-05T04:01:30.050627",
+                        "timeOut": "2024-06-05T12:03:26.986625",
+                        "duration": 8.02
+                      },
+                      {
+                        "employeeId": "ABTH4DPH",
+                        "entryId": "5b896bf5-6924-4e23-8bb2-c6a1f11f5c82",
+                        "timeIn": "2024-06-06T04:01:30.050627",
+                        "timeOut": "2024-06-06T12:03:26.986625",
+                        "duration": 8.02
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Time Entries Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "items": {
+                    "$ref": "#/components/schemas/Error"
+                  },
+                  "example": {
+                    "lastFiveTimeEntriesRetrieved": false,
+                    "error": "Could not find time entries with Employee ID: {employeeId}"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "items": {
+                    "$ref": "#/components/schemas/Error"
+                  },
+                  "example": {
+                    "lastFiveTimeEntriesRetrieved": false,
+                    "error": "An unexpected error occurred while retrieving time entries."
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/employees/time_entries/{employeeId}/": {
+      "put": {
+        "description": "Retrieves the last five time entries for an employee.",
+        "parameters": [
+          {
+            "name": "employeeId",
+            "in": "path",
+            "description": "The employee ID for whom the time entries are loaded.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "ABTH4DPH"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "entryId": {
+                    "type": "string",
+                    "description": "The ID for the entry being updated.",
+                    "example": "5b896bf5-6924-4e23-8bb2-c6a1f11f5c82"
+                  },
+                  "timeIn": {
+                    "type": "string",
+                    "description": "The timestamp when the employee clocked in.",
+                    "example": "2024-06-06T04:01:30.050627"
+                  },
+                  "timeOut": {
+                    "type": "string",
+                    "description": "The timestamp when the employee clocked out.",
+                    "example": "2024-06-06T12:03:26.986625"
+                  },
+                  "employeeClockOut": {
+                    "type": "boolean",
+                    "description": "Indicates if the update is the employee clocking out.",
+                    "example": false
+                  }
+                },
+                "required": [
+                  "entryId",
+                  "timeIn",
+                  "employeeClockOut"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "items": {
+                    "$ref": "#/components/schemas/TimeEntryResponse"
+                  },
+                  "example": {
+                    "updatedTimeEntry": true,
+                    "employeeId": "ABTH4DPH",
+                    "entryId": "28z7139-649t-4c84-9f5d-5f8d8ba81a4c",
+                    "timeIn": "2024-06-05T04:01:30.050627",
+                    "timeOut": "2024-06-05T12:03:26.986625",
+                    "duration": 8.02
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Time Entry Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "items": {
+                    "$ref": "#/components/schemas/Error"
+                  },
+                  "example": {
+                    "updatedTimeEntry": false,
+                    "error": "Could not find requested time entry."
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "items": {
+                    "$ref": "#/components/schemas/Error"
+                  },
+                  "example": {
+                    "updatedTimeEntry": false,
+                    "employeeId": "ABTH4DPH",
+                    "entryId": "28z7139-649t-4c84-9f5d-5f8d8ba81a4c",
+                    "timeIn": "2024-06-05T04:01:30.050627",
+                    "timeOut": "2024-06-05T12:03:26.986625",
+                    "duration": 8.02,
+                    "error": "An unexpected error occurred while updating time entry."
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "description": "Creates a new time entry for an employee and records the clockin timestamp.",
+        "parameters": [
+          {
+            "name": "employeeId",
+            "in": "path",
+            "description": "The employee ID for whom the time entries are loaded.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "ABTH4DPH"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "items": {
+                    "$ref": "#/components/schemas/TimeEntryResponse"
+                  },
+                  "example": {
+                    "newTimeEntryCreated": true,
+                    "employeeId": "ABTH4DPH",
+                    "entryId": "28z7139-649t-4c84-9f5d-5f8d8ba81a4c",
+                    "timeIn": "2024-06-05T04:01:30.050627"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "items": {
+                    "$ref": "#/components/schemas/Error"
+                  },
+                  "example": {
+                    "newTimeEntryCreated": false,
+                    "employeeId": "ABTH4DPH",
+                    "error": "An unexpected error occurred while creating time entry."
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Employee": {
+        "type": "object",
+        "properties": {
+          "employeeId": {
+            "type": "string"
+          },
+          "firstName": {
+            "type": "string"
+          },
+          "lastName": {
+            "type": "string"
+          },
+          "middleName": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "department": {
+            "type": "string"
+          },
+          "hireDate": {
+            "type": "string",
+            "format": "date"
+          },
+          "currentlyEmployed": {
+            "type": "boolean"
+          },
+          "phone": {
+            "type": "string"
+          },
+          "address": {
+            "type": "string"
+          },
+          "city": {
+            "type": "string"
+          },
+          "state": {
+            "type": "string"
+          },
+          "zipCode": {
+            "type": "string"
+          },
+          "payRate": {
+            "type": "string"
+          },
+          "permissionAccess": {
+            "type": "string"
+          }
+        }
+      },
+      "GetAllEmployeesResponse": {
+        "type": "object",
+        "properties": {
+          "employeesRetrieved": {
+            "type": "boolean"
+          },
+          "employeeList": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Employee"
+            }
+          }
+        }
+      },
+      "EmployeeCredentials": {
+        "type": "object",
+        "properties": {
+          "employeeId": {
+            "type": "string"
+          },
+          "username": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          },
+          "lastUpdated": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "accountLocked": {
+            "type": "boolean"
+          },
+          "forceChangeAfterLogin": {
+            "type": "boolean"
+          },
+          "failedAttempts": {
+            "type": "integer"
+          }
+        }
+      },
+      "TimeEntryResponse": {
+        "type": "object",
+        "properties": {
+          "employeeId": {
+            "type": "string"
+          },
+          "entryId": {
+            "type": "string"
+          },
+          "timeIn": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "timeOut": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "duration": {
+            "type": "number",
+            "format": "float"
+          }
+        }
+      },
+      "Error": {
+        "type": "object",
+        "properties": {
+          "employeesRetrieved": {
+            "type": "boolean"
+          },
+          "error": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

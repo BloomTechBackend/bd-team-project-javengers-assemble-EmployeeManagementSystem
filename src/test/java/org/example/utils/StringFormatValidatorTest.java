@@ -95,7 +95,8 @@ public class StringFormatValidatorTest {
             "ValidPassword&123",
             "ValidPassword*123",
             "ValidPassword+123",
-            "ValidPassword=123"
+            "ValidPassword=123",
+            "P@ssw0rd!"
     })
     void validPassword_withValidPasswords_returnsTrue(String password) {
         boolean validPasswordFormat = StringFormatValidator.validPassword(password);
