@@ -1,0 +1,180 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    background-color: #121212;
+    color: #ffffff;
+}
+
+h1 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 20px;
+    background-color: #1e1e1e;
+    border-bottom: 1px solid #333;
+}
+
+.navbar a {
+    text-decoration: none;
+}
+
+.navbar button, .navbar a {
+    background-color: #333;
+    border: 1px solid #555;
+    color: #fff;
+    padding: 10px;
+    cursor: pointer;
+    text-align: center;
+    display: inline-block;
+}
+
+.navbar button:hover, .navbar a:hover {
+    background-color: #555;
+}
+
+.container {
+    width: 300px;
+    padding: 20px;
+    border: 1px solid #333;
+    border-radius: 5px;
+    background-color: #1e1e1e;
+    margin: 20px auto;
+}
+
+.container h2 {
+    text-align: center;
+}
+
+.container label {
+    display: block;
+    margin-top: 10px;
+}
+
+.container input {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    background-color: #333;
+    border: 1px solid #555;
+    color: #fff;
+}
+
+.button-container {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 5px;
+}
+
+.container button {
+    width: 100%;
+    padding: 10px;
+    margin-top: 20px;
+    background-color: #333;
+    border: 1px solid #555;
+    color: #fff;
+    cursor: pointer;
+}
+
+.container button:hover {
+    background-color: #555;
+}
+
+.error {
+    color: red;
+    font-size: 0.9em;
+    display: block;
+    margin-top: 5px;
+}
+
+.requirement {
+    display: flex;
+    align-items: center;
+    margin-top: 5px;
+}
+
+.requirement span {
+    margin-left: 10px;
+}
+
+.requirement .status {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background-color: red;
+    color: white;
+    text-align: center;
+    line-height: 20px;
+}
+
+.requirement.met .status {
+    background-color: green;
+}
+
+.time-info {
+    text-align: center;
+}
+
+.time-info h3 {
+    margin: 10px 0;
+}
+
+.button-container-home {
+    display: flex;
+    justify-content: space-between;
+    margin: 20px 0;
+}
+
+.button-container-home button {
+    width: 48%;
+    padding: 10px;
+    background-color: #333;
+    border: 1px solid #555;
+    color: #fff;
+    cursor: pointer;
+}
+
+.button-container-home button:hover {
+    background-color: #555;
+}
+
+.table-container {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+    border: 1px solid #333;
+    border-radius: 5px;
+    background-color: #1e1e1e;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+table, th, td {
+    border: 1px solid #555;
+}
+
+th, td {
+    padding: 10px;
+    text-align: center;
+}
+
+th {
+    background-color: #333;
+}

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Javengers Login Page</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <h1>Javengers Employee Management</h1>
+    <div class="container">
+        <h2>Login</h2>
+        <form id="login-form">
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" placeholder="username" required>
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" placeholder="********" required>
+            <div id="error-message" style="color: red;"></div>
+            <div class="button-container">
+                <button type="submit">Login</button>
+                <button type="button" onclick="clearForm()">Cancel</button>
+            </div>
+        </form>
+    </div>
+    <script src="js/main.js"></script>
+</body>
+</html>

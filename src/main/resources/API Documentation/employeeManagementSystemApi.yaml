@@ -824,11 +824,11 @@ paths:
                 }
   /employees/time_entries/{employeeId}/:
     put:
-      description: "Retrieves the last five time entries for an employee."
+      description: "Updates an employee's time entry. Use this when clocking out an employee."
       parameters:
         - name: employeeId
           in: path
-          description: "The employee ID for whom the time entries are loaded."
+          description: "The employee ID for whom the time entry is being updated."
           required: true
           schema:
             type: string
