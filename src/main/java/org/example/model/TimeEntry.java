@@ -2,6 +2,7 @@ package org.example.model;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -122,7 +123,7 @@ public class TimeEntry {
     }
 
     private static LocalDateTime getCurrentTimeStamp() {
-        return LocalDateTime.now();
+        return LocalDateTime.now().atZone(ZoneId.of("UTC")).toLocalDateTime();
     }
 
     @Override

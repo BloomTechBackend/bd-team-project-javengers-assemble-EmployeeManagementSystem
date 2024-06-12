@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Javengers Home Page</title>
+    <link rel="stylesheet" href="css/home_styles.css">
+</head>
+<body>
+    <div class="navbar">
+        <a href="home.html">Home</a>
+        <a href="time_entries.html">Time Entries</a>
+        <a href="profile.html">Profile</a>
+        <button onclick="logout()">Logout</button>
+    </div>
+    <h1>Javengers Employee Management</h1>
+    <h2>Welcome, <span id="employee-name">[Employee Name]</span>!</h2>
+    <div class="container">
+        <div class="time-info">
+            <h3>Current Time: <span id="current-time">12:00 PM</span></h3>
+            <h3>Last Punch In: <span id="last-punch-in">---</span></h3>
+            <h3>Last Punch Out: <span id="last-punch-out">---</span></h3>
+        </div>
+        <div class="button-container">
+            <button type="button" onclick="punchIn()">Punch In</button>
+            <button type="button" onclick="punchOut()">Punch Out</button>
+        </div>
+    </div>
+    <div class="container">
+        <h3>Last 5 Time Entries</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Punch In</th>
+                    <th>Punch Out</th>
+                    <th>Duration</th>
+                </tr>
+            </thead>
+            <tbody id="time-entries">
+                <!-- Time entries will be populated here by JavaScript -->
+            </tbody>
+        </table>
+    </div>
+    <script src="js/home.js"></script>
+</body>
+</html>
