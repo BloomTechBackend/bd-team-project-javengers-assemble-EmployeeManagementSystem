@@ -1,6 +1,7 @@
 package org.example.model;
 
 import java.time.Duration;
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Objects;
@@ -123,7 +124,7 @@ public class TimeEntry {
     }
 
     private static LocalDateTime getCurrentTimeStamp() {
-        return LocalDateTime.now().atZone(ZoneId.of("UTC")).toLocalDateTime();
+        return LocalDateTime.ofInstant(Instant.now(), ZoneId.of("UTC"));
     }
 
     @Override

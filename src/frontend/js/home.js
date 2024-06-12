@@ -62,11 +62,11 @@ document.addEventListener('DOMContentLoaded', async function () {
     }
 
     function convertToLocaleDate(utcDateString) {
-        return new Date(utcDateString).toLocaleDateString(undefined, { timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone });
+        return new Date(utcDateString + "Z").toLocaleDateString();
     }
 
     function convertToLocaleTime(utcDateString) {
-        return new Date(utcDateString).toLocaleTimeString(undefined, { timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone });
+        return new Date(utcDateString + "Z").toLocaleTimeString();
     }
 
     window.punchIn = async function () {
@@ -81,7 +81,7 @@ document.addEventListener('DOMContentLoaded', async function () {
             if (!response.ok) {
                 throw new Error('Failed to punch in');
             }
-            alert('Punch in successful!');
+            //alert('Punch in successful!');
             await fetchAndUpdateTimeEntries();  // Reload and update the time entries table
         } catch (error) {
             console.error('Punch in error:', error);
@@ -105,7 +105,7 @@ document.addEventListener('DOMContentLoaded', async function () {
                 employeeClockOut: true
             };
 
-            console.log('Sending punch out request with body:', requestBody); // Log request body
+            //console.log('Sending punch out request with body:', requestBody); // Log request body
 
             const response = await fetch(`https://qjnhlsg7ge.execute-api.us-west-2.amazonaws.com/${API_STAGE}/employees/time_entries/${employeeId}`, {
                 method: 'PUT',
@@ -116,14 +116,14 @@ document.addEventListener('DOMContentLoaded', async function () {
             });
 
             const responseData = await parseResponse(response);
-            console.log('Punch out response data:', responseData); // Log response data
+            //console.log('Punch out response data:', responseData); // Log response data
 
             if (!response.ok) {
                 console.error('Punch out failed:', responseData);
                 throw new Error('Failed to punch out');
             }
 
-            alert('Punch out successful!');
+            //alert('Punch out successful!');
             await fetchAndUpdateTimeEntries();  // Reload and update the time entries table
 
             // Update the last punch in/out box
