@@ -8,7 +8,7 @@ document.getElementById('login-form').addEventListener('submit', async function(
     const username = document.getElementById('username').value;
     const password = document.getElementById('password').value;
 
-    console.log('Attempting login with:', username, password);
+    //console.log('Attempting login with:', username, password);
 
     try {
         const response = await fetch(`https://qjnhlsg7ge.execute-api.us-west-2.amazonaws.com/${API_STAGE}/employees/login`, {
@@ -25,7 +25,7 @@ document.getElementById('login-form').addEventListener('submit', async function(
 
         let result = await parseResponse(response);
 
-        console.log('Response received (parsed):', result);
+        //console.log('Response received (parsed):', result);
 
         if (result.loginSuccess) {
             console.log('Login successful, redirecting to appropriate page');
@@ -40,7 +40,7 @@ document.getElementById('login-form').addEventListener('submit', async function(
                 window.location.href = 'home.html';
             }
         } else {
-            console.log('Login failed, result:', result);
+            //console.log('Login failed, result:', result);
             document.getElementById('error-message').textContent = result.error || 'Login failed. Please try again.';
         }
     } catch (error) {

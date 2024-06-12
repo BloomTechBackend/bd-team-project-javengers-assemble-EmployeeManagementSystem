@@ -65,7 +65,7 @@ document.getElementById('change-password-form').addEventListener('submit', async
         return;
     }
 
-    console.log('Attempting to update password for employeeId:', employeeId);
+    //console.log('Attempting to update password for employeeId:', employeeId);
 
     try {
         const response = await fetch(`https://qjnhlsg7ge.execute-api.us-west-2.amazonaws.com/${API_STAGE}/employees/${employeeId}/credentials/update`, {
@@ -82,13 +82,13 @@ document.getElementById('change-password-form').addEventListener('submit', async
 
         let result = await parseResponse(response);
 
-        console.log('Response received (parsed):', result);
+        //console.log('Response received (parsed):', result);
 
         if (result.credentialsUpdated) {
-            console.log('Password update successful, redirecting to home page');
+            //console.log('Password update successful, redirecting to home page');
             window.location.href = 'home.html';
         } else {
-            console.log('Password update failed, result:', result);
+            //console.log('Password update failed, result:', result);
             document.getElementById('error-message').textContent = result.error || 'Password change failed. Please try again.';
         }
     } catch (error) {
