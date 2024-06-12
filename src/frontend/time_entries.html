@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Javengers Time Entries</title>
+    <link rel="stylesheet" href="css/time_entries_styles.css">
+</head>
+<body>
+    <div class="navbar">
+        <a href="home.html">Home</a>
+        <a href="time_entries.html">Time</a>
+        <a href="profile.html">Profile</a>
+        <button onclick="logout()">Logout</button>
+    </div>
+    <h1>All Time Entries</h1>
+    <div class="container">
+        <table id="time-entries-table">
+            <thead>
+                <tr>
+                    <th onclick="sortTable(0)">Date</th>
+                    <th onclick="sortTable(1)">Punch In</th>
+                    <th onclick="sortTable(2)">Punch Out</th>
+                    <th onclick="sortTable(3)">Duration</th>
+                </tr>
+            </thead>
+            <tbody id="time-entries-body">
+                <!-- Entries will be populated here -->
+            </tbody>
+        </table>
+    </div>
+    <script src="js/time_entries.js"></script>
+</body>
+</html>
