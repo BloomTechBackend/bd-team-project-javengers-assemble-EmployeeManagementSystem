@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Javengers Profile Page</title>
+    <link rel="stylesheet" href="css/profile_styles.css">
+</head>
+<body>
+    <div class="navbar">
+        <a href="home.html">Home</a>
+        <a href="time_entries.html">Time Entries</a>
+        <a href="profile.html">Profile</a>
+        <button onclick="logout()">Logout</button>
+    </div>
+    <h1>Javengers Employee Management</h1>
+    <div class="container">
+        <h2>Profile</h2>
+        <form id="profile-form">
+            <label for="employeeId">Employee ID:</label>
+            <input type="text" id="employeeId" name="employeeId" readonly>
+            
+            <div class="flex-container">
+                <div class="flex-item">
+                    <label for="firstName">First Name:</label>
+                    <input type="text" id="firstName" name="firstName" readonly>
+                </div>
+                <div class="flex-item">
+                    <label for="lastName">Last Name:</label>
+                    <input type="text" id="lastName" name="lastName" readonly>
+                </div>
+            </div>
+
+            <div class="flex-container">
+                <div class="flex-item">
+                    <label for="middleName">Middle Name:</label>
+                    <input type="text" id="middleName" name="middleName" readonly>
+                </div>
+                <div class="flex-item">
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" name="email" readonly>
+                </div>
+            </div>
+
+            <div class="flex-container">
+                <div class="flex-item">
+                    <label for="phone">Phone:</label>
+                    <input type="text" id="phone" name="phone" readonly>
+                </div>
+                <div class="flex-item">
+                    <label for="department">Department:</label>
+                    <input type="text" id="department" name="department" readonly>
+                </div>
+            </div>
+            
+            <label for="hireDate">Hire Date:</label>
+            <input type="date" id="hireDate" name="hireDate" readonly>
+
+            <label for="address">Address:</label>
+            <input type="text" id="address" name="address" readonly>
+            
+            <div class="flex-container">
+                <div class="flex-item">
+                    <label for="city">City:</label>
+                    <input type="text" id="city" name="city" readonly>
+                </div>
+                <div class="flex-item">
+                    <label for="state">State:</label>
+                    <select id="state" name="state" disabled>
+                        <!-- State options go here -->
+                    </select>
+                </div>
+                <div class="flex-item">
+                    <label for="zipCode">Zip Code:</label>
+                    <input type="text" id="zipCode" name="zipCode" readonly>
+                </div>
+            </div>
+
+            <div class="flex-container">
+                <div class="flex-item">
+                    <label for="payRate">Pay Rate:</label>
+                    <input type="text" id="payRate" name="payRate" readonly>
+                </div>
+                <div class="flex-item">
+                    <label for="permissionAccess">Permission Level:</label>
+                    <input type="text" id="permissionAccess" name="permissionAccess" readonly>
+                </div>
+            </div>
+
+            <div class="button-container">
+                <button id="edit-button" type="button" onclick="toggleEdit(true)">Edit</button>
+                <button id="cancel-button" type="button" onclick="toggleEdit(false)" style="display: none;">Cancel</button>
+                <button id="save-button" type="button" onclick="saveProfile()" style="display: none;">Save</button>
+            </div>
+        </form>
+        <div class="button-container">
+            <button type="button" onclick="showPasswordModal()">Change Password</button>
+        </div>
+    </div>
+
+    <!-- Password Modal -->
+    <div id="password-modal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closePasswordModal()">&times;</span>
+            <h2>Change Password</h2>
+            <form id="password-form">
+                <label for="new-password">New Password:</label>
+                <input type="password" id="new-password" name="new-password" placeholder="Enter new password" required>
+                <div id="password-requirements">
+                    <div class="requirement" id="requirement-lowercase">
+                        <div class="status">✘</div>
+                        <span>At least one lowercase letter</span>
+                    </div>
+                    <div class="requirement" id="requirement-uppercase">
+                        <div class="status">✘</div>
+                        <span>At least one uppercase letter</span>
+                    </div>
+                    <div class="requirement" id="requirement-digit">
+                        <div class="status">✘</div>
+                        <span>At least one digit</span>
+                    </div>
+                    <div class="requirement" id="requirement-special">
+                        <div class="status">✘</div>
+                        <span>At least one special character</span>
+                    </div>
+                    <div class="requirement" id="requirement-length">
+                        <div class="status">✘</div>
+                        <span>Minimum length of 8 characters</span>
+                    </div>
+                </div>
+                <label for="verify-password">Verify Password:</label>
+                <input type="password" id="verify-password" name="verify-password" placeholder="Re-enter new password" required>
+                <div id="error-message" style="color: red;"></div>
+                <div class="button-container">
+                    <button type="button" onclick="submitPasswordChange()">Submit</button>
+                    <button type="button" onclick="closePasswordModal()">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="js/profile.js"></script>
+</body>
+</html>
