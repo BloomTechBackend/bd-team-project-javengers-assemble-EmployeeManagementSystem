@@ -84,7 +84,9 @@ public class UpdateEmployeeRequest {
      * @param hireDate the date the employee was hired.
      */
     public void setHireDate(String hireDate) {
-        this.hireDate = ModelConverter.convertStringToLocalDate(hireDate);
+        if (hireDate != null) {
+            this.hireDate = ModelConverter.convertStringToLocalDate(hireDate);
+        }
     }
 
     public boolean isCurrentlyEmployed() {
@@ -105,7 +107,9 @@ public class UpdateEmployeeRequest {
      * @param terminatedDate the employee's termination date.
      */
     public void setTerminatedDate(String terminatedDate) {
-        this.terminatedDate = ModelConverter.convertStringToLocalDate(terminatedDate);
+        if (terminatedDate != null) {
+            this.terminatedDate = ModelConverter.convertStringToLocalDate(terminatedDate);
+        }
     }
 
     public String getPhone() {
@@ -167,5 +171,27 @@ public class UpdateEmployeeRequest {
      */
     public void setPermissionAccess(String permissionAccess) {
         this.permissionAccess = PermissionLevel.valueOf(permissionAccess.toUpperCase());
+    }
+
+    @Override
+    public String toString() {
+        return "UpdateEmployeeRequest{" +
+                "\nemployeeId='" + employeeId + '\'' +
+                ", \nfirstName='" + firstName + '\'' +
+                ", \nlastName='" + lastName + '\'' +
+                ", \nmiddleName='" + (middleName != null ? middleName : "") + '\'' +
+                ", \nemail='" + (email != null ? email : "") + '\'' +
+                ", \ndepartment='" + (department != null ? department : "") + '\'' +
+                ", \nhireDate=" + (hireDate != null ? hireDate : "") +
+                ", \ncurrentlyEmployed=" + currentlyEmployed +
+                ", \nterminatedDate=" + (terminatedDate != null ? terminatedDate : "") +
+                ", \nphone='" + (phone != null ? phone : "") + '\'' +
+                ", \naddress='" + (address != null ? address : "") + '\'' +
+                ", \ncity='" + (city != null ? city : "") + '\'' +
+                ", \nstate='" + (state != null ? state : "") + '\'' +
+                ", \nzipCode='" + (zipCode != null ? zipCode : "") + '\'' +
+                ", \npayRate='" + (payRate != null ? payRate : "") + '\'' +
+                ", \npermissionAccess=" + (permissionAccess != null ? permissionAccess.name() : "") +
+                "\n}";
     }
 }
