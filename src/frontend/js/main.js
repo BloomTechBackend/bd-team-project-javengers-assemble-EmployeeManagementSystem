@@ -1,5 +1,5 @@
 document.getElementById('login-form').addEventListener('submit', async function(event) {
-    const API_STAGE = "Gamma";
+    const API_STAGE = "Prod";
     event.preventDefault();
 
     // Clear any previous error messages

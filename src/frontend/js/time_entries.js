@@ -1,12 +1,21 @@
 document.addEventListener('DOMContentLoaded', async function () {
-    const API_STAGE = "Gamma";
+    const API_STAGE = "Prod";
     const employeeId = sessionStorage.getItem('employeeId');
     const username = sessionStorage.getItem('username');
+    const permissionLevel = sessionStorage.getItem("permissionLevel");
 
     if (!employeeId || !username) {
         alert('Session expired. Please log in again.');
         window.location.href = 'login.html';
         return;
+    }
+
+    if (permissionLevel === "ADMIN") {
+        const navBar = document.querySelector('.navbar');
+        const employeeManagementButton = document.createElement('a');
+        employeeManagementButton.href = 'employee_management.html';
+        employeeManagementButton.textContent = 'Employee Management';
+        navBar.insertBefore(employeeManagementButton, navBar.children[navBar.children.length - 1]);
     }
 
     // Fetch and populate time entries

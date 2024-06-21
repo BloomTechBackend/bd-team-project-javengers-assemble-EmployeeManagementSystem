@@ -1,6 +1,8 @@
+const API_STAGE = "Prod";
+
 document.getElementById('new-password').addEventListener('input', function(event) {
     const password = event.target.value;
-    const API_STAGE = "Gamma";
+
 
     const requirements = [
         { id: 'requirement-lowercase', regex: /(?=.*[a-z])/ },

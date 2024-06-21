@@ -67,7 +67,9 @@ public class NewEmployeeRequest {
     }
 
     public void setHireDate(String hireDate) {
-        this.hireDate = ModelConverter.convertStringToLocalDate(hireDate);
+        if (hireDate != null) {
+            this.hireDate = ModelConverter.convertStringToLocalDate(hireDate);
+        }
     }
 
     public String getPhone() {
@@ -123,7 +125,9 @@ public class NewEmployeeRequest {
     }
 
     public void setPermissionAccess(String permissionAccess) {
-        this.permissionAccess = PermissionLevel.valueOf(permissionAccess);
+        if (permissionAccess != null) {
+            this.permissionAccess = PermissionLevel.valueOf(permissionAccess);
+        }
     }
 
     public String getUsername() {
@@ -140,5 +144,26 @@ public class NewEmployeeRequest {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    @Override
+    public String toString() {
+        return "NewEmployeeRequest{" +
+                "\nfirstName='" + firstName + '\'' +
+                ", \nlastName='" + lastName + '\'' +
+                ", \nmiddleName='" + (middleName != null ? middleName : "") + '\'' +
+                ", \nemail='" + (email != null ? email : "") + '\'' +
+                ", \ndepartment='" + (department != null ? department : "") + '\'' +
+                ", \nhireDate=" + (hireDate != hireDate ? hireDate : "") +
+                ", \nphone='" + (phone != null ? phone : "") + '\'' +
+                ", \naddress='" + (address != null ? address : "") + '\'' +
+                ", \ncity='" + (city !=  null ? city : "") + '\'' +
+                ", \nstate='" + (state != null ? state : "") + '\'' +
+                ", \nzipCode='" + (zipCode != null ? zipCode : "") + '\'' +
+                ", \npayRate='" + (payRate != null ? payRate : "") + '\'' +
+                ", \npermissionAccess=" + (permissionAccess != null ? permissionAccess : "") +
+                ", \nusername='" + username + '\'' +
+                ", \npassword='" + password + '\'' +
+                "\n}";
     }
 }

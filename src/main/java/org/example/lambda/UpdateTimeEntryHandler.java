@@ -42,22 +42,19 @@ public class UpdateTimeEntryHandler implements RequestHandler<UpdateTimeEntryReq
     @Override
     public String handleRequest(UpdateTimeEntryRequest request, Context context) {
         try {
-            TimeEntry updatedTimeEntry = TimeEntry.builder()
-                    .withEmployeeId(request.getEmployeeId())
-                    .withEntryId(request.getEntryId())
-                    .withTimeIn(request.getTimeIn())
-                    .withTimeOut(request.getTimeOut())
-                    .withDuration(request.getDuration())
-                    .build();
+            log.info("Time Entry Update Request Received: {}", request);
+            TimeEntry timeEntry = timeEntryDao.getTimeEntry(request.getEmployeeId(), request.getEntryId());
 
             if (request.isEmployeeClockOut()) {
-                updatedTimeEntry.recordTimeOut();
+                timeEntry.recordTimeOut();
+            } else {
+                timeEntry.setTimeIn(request.getTimeIn());
+                timeEntry.setTimeOut(request.getTimeOut());
             }
 
-            TimeEntryModel savedTimeEntry = timeEntryDao.saveTimeEntry(updatedTimeEntry);
+            TimeEntryModel savedTimeEntry = timeEntryDao.saveTimeEntry(timeEntry);
 
-            log.info(String.format("Successfully updated time entry. " +
-                    "\nEmployee ID: %s \nEntry ID: %s ", savedTimeEntry.getEmployeeId(), savedTimeEntry.getEntryId()));
+            log.info("Successfully updated time entry: {}", savedTimeEntry);
 
             return JsonUtil.createJsonResponse(
                     UpdateTimeEntryResult.builder()

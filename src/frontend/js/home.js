@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', async function () {
-    const API_STAGE = "Gamma";
+    const API_STAGE = "Prod";
     const employeeId = sessionStorage.getItem('employeeId');
 
     if (!employeeId) {
@@ -121,6 +121,7 @@ document.addEventListener('DOMContentLoaded', async function () {
                 employeeId: employeeId,
                 entryId: lastEntry.entryId,
                 timeIn: lastEntry.timeIn,  // Keep in UTC
+                timeOut: null,
                 employeeClockOut: true
             };
 

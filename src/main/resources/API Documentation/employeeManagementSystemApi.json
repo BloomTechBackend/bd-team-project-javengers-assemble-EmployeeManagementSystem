@@ -4,6 +4,16 @@
     "title": "Javengers Assemble Employee Management System API",
     "version": "1.0.0"
   },
+  "servers": [
+    {
+      "url": "https://qjnhlsg7ge.execute-api.us-west-2.amazonaws.com/Prod",
+      "description": "Production Server"
+    },
+    {
+      "url": "https://qjnhlsg7ge.execute-api.us-west-2.amazonaws.com/Gamma",
+      "description": "Pre-Production Test Server"
+    }
+  ],
   "paths": {
     "/employees": {
       "get": {
@@ -143,27 +153,27 @@
                 "properties": {
                   "firstName": {
                     "type": "string",
-                    "example": "John"
+                    "example": "Peter"
                   },
                   "lastName": {
                     "type": "string",
-                    "example": "Doe"
+                    "example": "Parker"
                   },
                   "middleName": {
                     "type": "string",
-                    "example": "Moe"
+                    "example": "Benjamin"
                   },
                   "email": {
                     "type": "string",
-                    "example": "jon.doe@example.com"
+                    "example": "peter.parker@example.com"
                   },
                   "department": {
                     "type": "string",
-                    "example": "DevOps"
+                    "example": "Engineering"
                   },
                   "hireDate": {
                     "type": "string",
-                    "example": "2024-06-01"
+                    "example": "2024-01-15"
                   },
                   "phone": {
                     "type": "string",
@@ -171,7 +181,7 @@
                   },
                   "address": {
                     "type": "string",
-                    "example": "123 Example Ave"
+                    "example": "123 Address Dr"
                   },
                   "city": {
                     "type": "string",
@@ -188,18 +198,20 @@
                   "payRate": {
                     "type": "string",
                     "description": "Strict formatting. See examples for accepted types.",
-                    "example": "19.25/hr"
+                    "example": "25.25/hr"
                   },
                   "permissionAccess": {
                     "type": "string",
                     "example": "STANDARD"
                   },
                   "username": {
-                    "type": "string"
+                    "type": "string",
+                    "example" : "pparker"
                   },
                   "password": {
                     "type": "string",
-                    "description": "When creating a new user, the password provided functions as a temporary password. As such, the password is returned in the result so it can be noted for the employee. The employee will be prompted to create a new password after logging in for the first time."
+                    "description": "When creating a new user, the password provided functions as a temporary password. As such, the password is returned in the result so it can be noted for the employee. The employee will be prompted to create a new password after logging in for the first time.",
+                    "example" : "T3mpP@ssw0rd!"
                   }
                 },
                 "required": [
@@ -239,7 +251,7 @@
                     "payRate": "25/hr",
                     "permissionAccess": "STANDARD",
                     "username": "pparker",
-                    "password": "SomeTempP@ss!"
+                    "password": "T3mpP@ssw0rd!"
                   }
                 }
               }

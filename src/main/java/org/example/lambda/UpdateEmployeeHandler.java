@@ -55,7 +55,7 @@ public class UpdateEmployeeHandler implements RequestHandler<UpdateEmployeeReque
             String email = request.getEmail();
             String department = request.getDepartment();
             LocalDate hireDate = request.getHireDate();
-            boolean currentlyEmployed = request.isCurrentlyEmployed();
+            Boolean currentlyEmployed = request.isCurrentlyEmployed();
             LocalDate terminatedDate = request.getTerminatedDate();
             String phone = request.getPhone();
             String address = request.getAddress();
@@ -83,7 +83,7 @@ public class UpdateEmployeeHandler implements RequestHandler<UpdateEmployeeReque
             if (hireDate != null && !hireDate.equals(employee.getHireDate())) {
                 employee.setHireDate(hireDate);
             }
-            if (currentlyEmployed != employee.isCurrentlyEmployed()) {
+            if (currentlyEmployed != null && currentlyEmployed != employee.isCurrentlyEmployed()) {
                 employee.setCurrentlyEmployed(currentlyEmployed);
             }
             if (terminatedDate != null && !terminatedDate.equals(employee.getTerminatedDate())) {

@@ -16,7 +16,7 @@ public class UpdateEmployeeRequest {
     private String email;
     private String department;
     private LocalDate hireDate;
-    private boolean currentlyEmployed;
+    private Boolean currentlyEmployed;
     private LocalDate terminatedDate;
     private String phone;
     private String address;
@@ -89,12 +89,14 @@ public class UpdateEmployeeRequest {
         }
     }
 
-    public boolean isCurrentlyEmployed() {
+    public Boolean isCurrentlyEmployed() {
         return currentlyEmployed;
     }
 
-    public void setCurrentlyEmployed(boolean currentlyEmployed) {
-        this.currentlyEmployed = currentlyEmployed;
+    public void setCurrentlyEmployed(Boolean currentlyEmployed) {
+        if (currentlyEmployed != null) {
+            this.currentlyEmployed = currentlyEmployed;
+        }
     }
 
     public LocalDate getTerminatedDate() {

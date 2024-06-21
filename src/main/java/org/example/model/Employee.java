@@ -222,6 +222,10 @@ public class Employee {
                 throw new InvalidInputFormatException("Invalid pay rate format: " + payRate);
             }
 
+            if (permissionAccess == null) {
+                this.permissionAccess = PermissionLevel.STANDARD;
+            }
+
             return new Employee(this);
         }
     }
@@ -265,7 +269,7 @@ public class Employee {
     }
 
     public void setMiddleName(String middleName) {
-        if (!StringFormatValidator.validNameFormat(middleName)) {
+        if (middleName != null && !StringFormatValidator.validNameFormat(middleName)) {
             throw new InvalidInputFormatException("Invalid middle name format: " + middleName);
         }
 
@@ -277,7 +281,7 @@ public class Employee {
     }
 
     public void setEmail(String email) {
-        if (!StringFormatValidator.validEmailFormat(email)) {
+        if (email != null && !StringFormatValidator.validEmailFormat(email)) {
             throw new InvalidInputFormatException("Invalid email format: " + email);
         }
 
@@ -321,7 +325,7 @@ public class Employee {
     }
 
     public void setPhone(String phone) {
-        if (!StringFormatValidator.validUsPhoneFormat(phone)) {
+        if (phone != null && !StringFormatValidator.validUsPhoneFormat(phone)) {
             throw new InvalidInputFormatException(String.format("Invalid phone format: %s. Expected format: +1-xxx-xxx-xxxx", phone));
         }
 
@@ -341,7 +345,7 @@ public class Employee {
     }
 
     public void setCity(String city) {
-        if (!StringFormatValidator.validNameFormat(city)) {
+        if (city != null && !StringFormatValidator.validNameFormat(city)) {
             throw new InvalidInputFormatException("Invalid city name format: " + city);
         }
 
@@ -353,7 +357,7 @@ public class Employee {
     }
 
     public void setState(String state) {
-        if (!StringFormatValidator.validNameFormat(state)) {
+        if (state != null && !StringFormatValidator.validNameFormat(state)) {
             throw new InvalidInputFormatException("Invalid state name format: " + state);
         }
 
@@ -365,7 +369,7 @@ public class Employee {
     }
 
     public void setZipCode(String zipCode) {
-        if (!StringFormatValidator.validUnitedStatesZipCodeFormat(zipCode)) {
+        if (zipCode != null && !StringFormatValidator.validUnitedStatesZipCodeFormat(zipCode)) {
             throw new InvalidInputFormatException("Invalid zip code format: " + zipCode);
         }
         this.zipCode = zipCode;

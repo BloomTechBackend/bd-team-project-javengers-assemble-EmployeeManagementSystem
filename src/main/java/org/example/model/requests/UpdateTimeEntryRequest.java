@@ -33,7 +33,9 @@ public class UpdateTimeEntryRequest {
     }
 
     public void setTimeIn(String timeIn) {
-        this.timeIn = ModelConverter.convertStringToLocalDateTime(timeIn);
+        if (timeIn != null) {
+            this.timeIn = ModelConverter.convertStringToLocalDateTime(timeIn);
+        }
     }
 
     public LocalDateTime getTimeOut() {
@@ -41,7 +43,9 @@ public class UpdateTimeEntryRequest {
     }
 
     public void setTimeOut(String timeOut) {
-        this.timeOut = ModelConverter.convertStringToLocalDateTime(timeOut);
+        if (timeOut != null) {
+            this.timeOut = ModelConverter.convertStringToLocalDateTime(timeOut);
+        }
     }
 
     public double getDuration() {
@@ -58,5 +62,17 @@ public class UpdateTimeEntryRequest {
 
     public void setEmployeeClockOut(boolean employeeClockOut) {
         this.employeeClockOut = employeeClockOut;
+    }
+
+    @Override
+    public String toString() {
+        return "UpdateTimeEntryRequest{" +
+                "\nemployeeId='" + employeeId + '\'' +
+                ", \nentryId='" + entryId + '\'' +
+                ", \ntimeIn=" + (timeIn != null ? timeIn : "") +
+                ", \ntimeOut=" + (timeOut != null ? timeOut : "") +
+                ", \nduration=" + duration +
+                ", \nemployeeClockOut=" + employeeClockOut +
+                "\n}";
     }
 }

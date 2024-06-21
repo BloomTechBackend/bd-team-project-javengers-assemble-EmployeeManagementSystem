@@ -1,12 +1,21 @@
 document.addEventListener('DOMContentLoaded', async function () {
-    const API_STAGE = "Gamma";
+    const API_STAGE = "Prod";
     const employeeId = sessionStorage.getItem('employeeId');
     const username = sessionStorage.getItem('username');
+    const permissionLevel = sessionStorage.getItem("permissionLevel");
 
     if (!employeeId || !username) {
         alert('Session expired. Please log in again.');
         window.location.href = 'login.html';
         return;
+    }
+
+    if (permissionLevel === "ADMIN") {
+        const navBar = document.querySelector('.navbar');
+        const employeeManagementButton = document.createElement('a');
+        employeeManagementButton.href = 'employee_management.html';
+        employeeManagementButton.textContent = 'Employee Management';
+        navBar.insertBefore(employeeManagementButton, navBar.children[navBar.children.length - 1]);
     }
 
     // Populate state dropdown
@@ -39,20 +48,20 @@ document.addEventListener('DOMContentLoaded', async function () {
     }
 
     function populateProfile(data) {
-        document.getElementById('employeeId').value = data.employeeId;
-        document.getElementById('firstName').value = data.firstName;
-        document.getElementById('lastName').value = data.lastName;
-        document.getElementById('middleName').value = data.middleName;
-        document.getElementById('email').value = data.email;
-        document.getElementById('phone').value = data.phone;
-        document.getElementById('department').value = data.department;
-        document.getElementById('hireDate').value = data.hireDate;
-        document.getElementById('address').value = data.address;
-        document.getElementById('city').value = data.city;
-        document.getElementById('state').value = data.state;
-        document.getElementById('zipCode').value = data.zipCode;
-        document.getElementById('payRate').value = data.payRate;
-        document.getElementById('permissionAccess').value = data.permissionAccess.charAt(0) + data.permissionAccess.slice(1).toLowerCase();
+        document.getElementById('employeeId').value = data.employeeId || '';
+        document.getElementById('firstName').value = data.firstName || '';
+        document.getElementById('lastName').value = data.lastName || '';
+        document.getElementById('middleName').value = data.middleName || '';
+        document.getElementById('email').value = data.email || '';
+        document.getElementById('phone').value = data.phone || '';
+        document.getElementById('department').value = data.department || '';
+        document.getElementById('hireDate').value = data.hireDate || '';
+        document.getElementById('address').value = data.address || '';
+        document.getElementById('city').value = data.city || '';
+        document.getElementById('state').value = data.state || '';
+        document.getElementById('zipCode').value = data.zipCode || '';
+        document.getElementById('payRate').value = data.payRate || '';
+        document.getElementById('permissionAccess').value = data.permissionAccess.charAt(0) + data.permissionAccess.slice(1).toLowerCase() || '';
     }
 
     window.toggleEdit = function (isEditing) {
@@ -77,6 +86,8 @@ document.addEventListener('DOMContentLoaded', async function () {
             phone: document.getElementById('phone').value,
             department: document.getElementById('department').value,
             hireDate: document.getElementById('hireDate').value,
+            currentlyEmployed: null,
+            terminatedDate: null,
             address: document.getElementById('address').value,
             city: document.getElementById('city').value,
             state: document.getElementById('state').value,
