@@ -10,7 +10,7 @@ They need an affordable, integrated solution to manage employee time tracking an
 ## 2. Top Questions to Resolve in Review
 
 1. How can we ensure secure authentication and authorization for different user roles (employees vs. admins)?
-  - **Solution:** Using AWS Cognito to manage user credentials, authentication, and authorization.
+- **Solution:** Managing user credentials, authentication, and authorization within the application.
 2. What are the most efficient ways to handle data storage and retrieval in DynamoDB for our use cases?
 3. How can we design a user-friendly interface that simplifies the process of punching in/out and managing employee records?
 
@@ -24,7 +24,7 @@ They need an affordable, integrated solution to manage employee time tracking an
 
 ### 4.1. In Scope
 
-- User authentication and authorization using AWS Cognito
+- User authentication and authorization managed within the application
 - Punch in/out functionality
 - Employee profile management
 - Admin functionalities (add/modify employees)
@@ -36,11 +36,11 @@ They need an affordable, integrated solution to manage employee time tracking an
 
 # 5. Proposed Architecture Overview
 
-- AWS Cognito for user authentication and authorization, managing user pools and tokens.
+- Authentication and authorization managed within the application
 - AWS Lambda for serverless backend functions.
 - DynamoDB for data storage.
-- API Gateway to expose APIs and integrate with AWS Cognito for securing endpoints.
-- A frontend framework like React for the web interface.
+- API Gateway to expose APIs and secure endpoints.
+- Plain HTML, CSS, and JavaScript for the web interface.
 
 ### Sequence Diagram
 
@@ -63,7 +63,7 @@ They need an affordable, integrated solution to manage employee time tracking an
 ### Authentication and Authorization
 
 - **SignUp / SignIn / SignOut**
-  - Handled by AWS Cognito. The frontend will interact with AWS Cognito for user registration, login, and logout.
+  - Handled within the application. The frontend will interact with the backend for user registration, login, and logout.
 
 ### Employee_Time_Entry
 
@@ -169,4 +169,3 @@ They need an affordable, integrated solution to manage employee time tracking an
 
 #### Profile Page
 ![Profile Page](./images/Profile_Page.jpg)
-
