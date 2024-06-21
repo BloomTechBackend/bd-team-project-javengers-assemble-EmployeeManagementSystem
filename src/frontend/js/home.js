@@ -1,17 +1,37 @@
 document.addEventListener('DOMContentLoaded', async function () {
-    const API_STAGE = "Gamma";
+    const API_STAGE = "Prod";
     const employeeId = sessionStorage.getItem('employeeId');
-    const username = sessionStorage.getItem('username');
-    let lastEntries = [];
 
-    if (!employeeId || !username) {
-        document.getElementById('employee-name').textContent = 'Session expired. Please log in again.';
+    if (!employeeId) {
+        alert('Session expired. Please log in again.');
         window.location.href = 'login.html';
         return;
     }
 
-    // Set the employee name from session storage
-    document.getElementById('employee-name').textContent = username;
+    // Fetch employee data
+    try {
+        const response = await fetch(`https://qjnhlsg7ge.execute-api.us-west-2.amazonaws.com/${API_STAGE}/employees/${employeeId}`);
+        if (!response.ok) {
+            throw new Error('Failed to fetch employee data');
+        }
+        let employeeData = await parseResponse(response);
+        sessionStorage.setItem('permissionLevel', employeeData.permissionAccess);
+        sessionStorage.setItem('username', employeeData.firstName);
+
+        // Set the employee name from session storage
+        document.getElementById('employee-name').textContent = employeeData.firstName;
+
+        // Show "Employee Management" button if the user is an admin
+        if (employeeData.permissionAccess === 'ADMIN') {
+            const navBar = document.querySelector('.navbar');
+            const employeeManagementButton = document.createElement('a');
+            employeeManagementButton.href = 'employee_management.html';
+            employeeManagementButton.textContent = 'Employee Management';
+            navBar.insertBefore(employeeManagementButton, navBar.children[navBar.children.length - 1]);
+        }
+    } catch (error) {
+        console.error('Error fetching employee data:', error);
+    }
 
     // Update the current time every second
     setInterval(() => {
@@ -81,7 +101,6 @@ document.addEventListener('DOMContentLoaded', async function () {
             if (!response.ok) {
                 throw new Error('Failed to punch in');
             }
-            //alert('Punch in successful!');
             await fetchAndUpdateTimeEntries();  // Reload and update the time entries table
         } catch (error) {
             console.error('Punch in error:', error);
@@ -102,10 +121,9 @@ document.addEventListener('DOMContentLoaded', async function () {
                 employeeId: employeeId,
                 entryId: lastEntry.entryId,
                 timeIn: lastEntry.timeIn,  // Keep in UTC
+                timeOut: null,
                 employeeClockOut: true
             };
-
-            //console.log('Sending punch out request with body:', requestBody); // Log request body
 
             const response = await fetch(`https://qjnhlsg7ge.execute-api.us-west-2.amazonaws.com/${API_STAGE}/employees/time_entries/${employeeId}`, {
                 method: 'PUT',
@@ -116,14 +134,10 @@ document.addEventListener('DOMContentLoaded', async function () {
             });
 
             const responseData = await parseResponse(response);
-            //console.log('Punch out response data:', responseData); // Log response data
-
             if (!response.ok) {
                 console.error('Punch out failed:', responseData);
                 throw new Error('Failed to punch out');
             }
-
-            //alert('Punch out successful!');
             await fetchAndUpdateTimeEntries();  // Reload and update the time entries table
 
             // Update the last punch in/out box

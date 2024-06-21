@@ -18,6 +18,7 @@ import java.time.LocalDate;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.openMocks;
@@ -94,9 +95,12 @@ public class UpdateEmployeeHandlerTest {
     @Test
     public void handleRequest_validRequest_updatesEmployee() {
         // Given
+        Employee originalEmployee = employee;
+        String originalPayRate = employee.getPayRate();
         EmployeeModel employeeModel = ModelConverter.fromEmployee(employee);
         employeeModel.setPayRate(request.getPayRate());
         employeeModel.setPermissionAccess(request.getPermissionAccess().name());
+        when(employeeDao.getEmployee(anyString())).thenReturn(employee);
         when(employeeDao.saveEmployee(any(Employee.class))).thenReturn(employeeModel);
 
         // When
@@ -106,14 +110,15 @@ public class UpdateEmployeeHandlerTest {
         verify(employeeDao).saveEmployee(any(Employee.class));
 
         assertTrue(result.isEmployeeUpdated(), "Result isEmployeeUpdated should return true.");
-        assertNotEquals(employee, convertResultToEmployee(result), "Updated Employee should not be equal to the original Employee Instance.");
-        assertNotEquals(employee.getPayRate(), convertResultToEmployee(result).getPayRate(), "Pay rates shouldn't match after update.");
+        assertNotEquals(originalEmployee, convertResultToEmployee(result), "Updated Employee should not be equal to the original Employee Instance.");
+        assertNotEquals(originalPayRate, convertResultToEmployee(result).getPayRate(), "Pay rates shouldn't match after update.");
         assertEquals(PermissionLevel.ADMIN, convertResultToEmployee(result).getPermissionAccess(), "Permission access shouldn't match after update.");
     }
 
     @Test
     public void handleRequest_validRequest_throwsException() {
         // Given
+        when(employeeDao.getEmployee(anyString())).thenReturn(employee);
         when(employeeDao.saveEmployee(any(Employee.class))).thenThrow(new RuntimeException("An unexpected error occurred."));
 
         // When
